@@ -24,32 +24,34 @@
                             <h1 class="text-dark mb-5">Seja bem-vindo!&nbsp;</h1>
                             <h5 class="text-dark mb-4">Para começar, vamos precisar saber um pouco mais sobre você!</h5>
                         </div>
-                        <form class="user">
+                        <form class="user" action="">
                             <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Primeiro Nome" name="first_name"></div>
-                                <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Sobrenome" name="last_name"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="nme_usuario" placeholder="Digite seu nome" name="nme_usuario"></div>
+                                <div class="form-group col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="email" id="eml_usuario" aria-describedby="emailHelp" placeholder="Email " name="eml_usuario"></div>
                             </div>
-                            <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email " name="email"></div>
                             <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Digite sua senha..." name="password"></div>
-                                <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repita a senha..." name="password_repeat"></div>
+                                <div class="col-sm-12"><input class="form-control form-control-user" type="text" id="end_usuario" placeholder="Endereço..." name="adress"></div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="psw_usuario" placeholder="Digite sua senha..." name="psw_usuario"></div>
+                                <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="RepeatPasswordInput" placeholder="Repita a senha..." name="password_repeat"></div>
                             </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Criar nova conta</button>
                             <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Criar com o google.</a>
                             <hr>
                         </form>
-                        <div class="text-center"><a class="small" href="forgot-password.html">Esqueceu sua senha?</a></div>
-                        <div class="text-center"><a class="small" href="login.html">Já tem uma conta? Login!</a></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>x'
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/apiHandle.js"></script>
 </body>
 
 </html>
