@@ -1,13 +1,17 @@
 $(document).ready(function() {
-    $('.formUser').on('submit', function(event) {
+    $('#user').on('submit', function(event) {
         $.ajax({
-            data : {
+            method: 'POST',
+            url: '/api/v1/insert/usuarios',
+            dataType: 'json',
+            data : JSON.stringify({
                 name : $('#nme_usuario').val(),
                 email : $('#eml_usuario').val(),
                 password : $('#psw_usuario').val()
-            },
-            type: 'POST',
-            url: '/api/v1/insert/usuarios'
+            }),
+            sucess: function(data) {
+                console.log(data);
+            }
         })
         .done(function(data) {
             if(data.error) {
