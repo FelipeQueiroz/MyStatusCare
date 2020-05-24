@@ -27,7 +27,7 @@ config_sql(app)
 def home():
 	return '''<h1> API COVID</h1>
 	<p>API criada para a aplicação MyStatusCare</p>
-	<a href="http://127.0.0.1:5000/api/v1/resources/usuarios?idt_usuario=1&city_id=1&end_usuario=rua+1&pto_user=5&nme_usuario=gabriel&ida_usuario=18">link</a><br>
+	<a href="http://127.0.0.1:5000/api/v1/resources/usuarios?idt_usuario=1">link</a><br>
 	'''
 
 #Rota table = TB_usuario
@@ -52,7 +52,7 @@ def cities():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.city;")
+		cur.execute("SELECT * FROM mydb.tb_cidade;")
 		all_cities = cur.fetchall()
 		resp=jsonify(all_cities)
 		return resp
@@ -68,7 +68,7 @@ def country():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.country;")
+		cur.execute("SELECT * FROM mydb.tb_pais;")
 		all_country = cur.fetchall()
 		resp=jsonify(all_country)
 		return resp
@@ -84,7 +84,7 @@ def state():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.state;")
+		cur.execute("SELECT * FROM mydb.tb_estado;")
 		all_states = cur.fetchall()
 		resp=jsonify(all_state)
 		return resp
@@ -147,7 +147,7 @@ def user_symptoms():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_sintomas;")
+		cur.execute("SELECT * FROM mydb.tb_sintomas_usuario;")
 		all_user_symptoms = cur.fetchall()
 		resp=jsonify(all_user_symptoms)
 		return resp
@@ -166,9 +166,9 @@ def api_filter_user():
 	idt_usuario = query_parameters.get("idt_usuario")
 	nme_usuario = query_parameters.get("nme_usuario")
 	ida_usuario = query_parameters.get("ida_usuario")
-	end_usuario     = query_parameters.get("end_usuario")
-	city_id     = query_parameters.get("city.id")
-	pto_user    = query_parameters.get("pto_user")
+	end_usuario = query_parameters.get("end_usuario")
+	cod_cidade  = query_parameters.get("cod_cidade")
+	pto_usuario = query_parameters.get("pto_usuario")
 
 
 
@@ -190,16 +190,16 @@ def api_filter_user():
 		query += ' end_usuario=%s AND'
 		to_filter.append(end_usuario)
 
-	if city_id:
-		query += ' city_id=%s AND'
-		to_filter.append(city_id)
+	if cod_cidade:
+		query += ' cod_cidade=%s AND'
+		to_filter.append(cod_cidade)
 	
-	if pto_user:
-		query += ' pto_user=%s AND'
-		to_filter.append(pto_user)
+	if pto_usuario:
+		query += ' pto_usuario=%s AND'
+		to_filter.append(pto_usuario)
 
 
-	if not (idt_usuario or nme_usuario or ida_usuario or end_usuario or city_id or pto_user):
+	if not (idt_usuario or nme_usuario or ida_usuario or end_usuario or cod_cidade or pto_usuario):
 		return page_not_found(404)
 
 	query = query[:-4] + ';'
@@ -218,9 +218,9 @@ def api_filter_hospital():
 
 	idt_hospital = query_parameters.get("idt_hospital")
 	nme_hospital = query_parameters.get("nme_hospital")
-	end_hospital = query_parameters.get("ida_usuario")
-	bairro_hospital  = query_parameters.get("end_usuario")
-	city_id     = query_parameters.get("city.id")
+	end_hospital = query_parameters.get("end_hospital")
+	bairro_hospital  = query_parameters.get("bairro_hospital")
+	cod_cidade     = query_parameters.get("cod_cidade")
 
 	query = "SELECT * FROM tb_hospital WHERE"
 	to_filter=[]
@@ -240,11 +240,15 @@ def api_filter_hospital():
 		query += ' bairro_hospital=%s AND'
 		to_filter.append(bairro_hospital)
 
-	if city_id:
-		query += ' city_id=%s AND'
-		to_filter.append(city_id)
+	if cod_cidade:
+		query += ' cod_cidade=%s AND'
+		to_filter.append(cod_cidade)
+	
+	if cod_estado:
+		query += ' cod_estado=%s AND'
+		to_filter.append(cod_estado)
 
-	if not (nme_hospital or end_hospital or bairro_hospital or city_id or idt_hospital ):
+	if not (nme_hospital or end_hospital or bairro_hospital or cod_cidade or idt_hospital or cod_estado):
 		return page_not_found(404)
 
 	query = query[:-4] + ';'
@@ -315,13 +319,13 @@ def api_insert_user():
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
 		psw_usuario =	request.json.get('psw_usuario')
-		end_usuario 	=	request.json.get('end_usuario')
+		address 	=	request.json.get('end_usuario')
 		eml_usuario	= 	request.json.get('eml_usuario')
 		
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mydb.tb_usuario(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario) VALUES (%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario))
+		cur.execute("INSERT INTO mydb2.tb_usuario(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario) VALUES (%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario))
 		conn.commit()
 		cur.close()
 		conn.close()
