@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Register - Brand</title>
+    <title>Registro - MyStatusCare</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -30,15 +31,19 @@
                                 <div id="errorAlert" class="alert alert-danger" role="alert" style="display: none;"></div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="nme_usuario" placeholder="Digite seu nome" name="nme_usuario"></div>
-                                <div class="form-group col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="email" id="eml_usuario" aria-describedby="emailHelp" placeholder="Email " name="eml_usuario"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="nme_usuario" placeholder="Digite seu nome" name="nme_usuario" required></div>
+                                <div class="form-group col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="email" id="eml_usuario" aria-describedby="emailHelp" placeholder="Email " name="eml_usuario" required></div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-12"><input class="form-control form-control-user" type="text" id="end_usuario" placeholder="Endereço..." name="adress"></div>
+                                <div class="col-sm-12"><input class="form-control form-control-user" type="text" id="end_usuario" placeholder="Endereço..." name="adress" required></div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="psw_usuario" placeholder="Digite sua senha..." name="psw_usuario"></div>
-                                <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="RepeatPasswordInput" placeholder="Repita a senha..." name="password_repeat"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="select" id="city_select" placeholder="Digite sua cidade" name="cod_cidade" required></div>
+                                <div class="form-group col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="ida_usuario"  placeholder="Digite sua idade " name="ida_usuario" required></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="psw_usuario" placeholder="Digite sua senha..." name="psw_usuario" required></div>
+                                <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="RepeatPasswordInput" placeholder="Repita a senha..." name="password_repeat" required></div>
                             </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Criar nova conta</button>
                             <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Criar com o google.</a>
                             <hr>
@@ -47,7 +52,7 @@
                 </div>
             </div>
         </div>
-    </div>x'
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/chart.min.js"></script>
@@ -55,6 +60,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/apiHandle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 </body>
 
 </html>
