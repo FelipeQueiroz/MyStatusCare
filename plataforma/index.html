@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="onLoad()">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background-color: #4e73df;">
             <div class="container-fluid d-flex flex-column p-0">
@@ -41,7 +41,7 @@
                         <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <div class="input-group-append">
-                                    <h1 style="font-size: 30px;color: #3d348b;">Seja bem-vindo, Valerie!</h1>
+                                    <h1 id="userName" style="font-size: 30px;color: #3d348b;">Seja bem-vindo, </h1>
                                 </div>
                             </div>
                         </form>
@@ -194,7 +194,8 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/apiHandleDashboard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 </body>
 
 </html>
