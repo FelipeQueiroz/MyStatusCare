@@ -336,6 +336,29 @@ def api_insert_user():
 	except Exception as e:
 		return(str(e))
 
+@app.route('/api/v1/login', methods=['POST'])
+def api_login():
+	try:
+		eml_usuario	= 	request.json.get('eml_usuario')
+		psw_usuario =	request.json.get('psw_usuario')
+
+		conn = mysql.connect()
+		cur = conn.cursor(pymysql.cursors.DictCursor)
+		cur.execute("SELECT idt_usuario FROM mydb.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
+		user = cur.fetchone()
+
+		if user == None:
+			return  jsonify("Email ou Senha Incorretos")
+		else:
+			return jsonify(user)
+
+	except Exception as e:
+		print(e)
+	finally:
+		cur.close()
+		conn.close()
+
+		
 @app.errorhandler(404)
 def page_not_found(e):
 	return "<h1>404</h1><p>The resource could not be found.</p>", 404
