@@ -216,11 +216,11 @@ def api_filter_user():
 def api_filter_hospital():
 	query_parameters = request.args
 
-	idt_hospital = query_parameters.get("idt_hospital")
-	nme_hospital = query_parameters.get("nme_hospital")
-	end_hospital = query_parameters.get("end_hospital")
-	bairro_hospital  = query_parameters.get("bairro_hospital")
-	cod_cidade     = query_parameters.get("cod_cidade")
+	idt_hospital 	= query_parameters.get("idt_hospital")
+	nme_hospital 	= query_parameters.get("nme_hospital")
+	end_hospital 	= query_parameters.get("end_hospital")
+	bairro_hospital = query_parameters.get("bairro_hospital")
+	cod_cidade 		= query_parameters.get("cod_cidade")
 
 	query = "SELECT * FROM tb_hospital WHERE"
 	to_filter=[]
@@ -319,14 +319,14 @@ def api_insert_user():
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
 		psw_usuario =	request.json.get('psw_usuario')
-		end_usuario 	=	request.json.get('end_usuario')
+		end_usuario	=	request.json.get('end_usuario')
 		eml_usuario	= 	request.json.get('eml_usuario')
 		cod_cidade	= 	request.json.get('cod_cidade')
 		
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mydb.tb_usuario(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade) VALUES (%s,%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade))
+		cur.execute("INSERT INTO mydb.tb_usuario(nme_usuario, ida_usuario, end_usuario, psw_usuario, eml_usuario, cod_cidade) VALUES (%s,%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade))
 		conn.commit()
 		cur.close()
 		conn.close()
@@ -334,6 +334,28 @@ def api_insert_user():
 		return "Registered"
 	except Exception as e:
 		return(str(e))
+
+@app.route('/api/v1/login', methods=['POST'])
+def api_login():
+	try:
+		eml_usuario	= 	request.json.get('eml_usuario')
+		psw_usuario =	request.json.get('psw_usuario')
+
+		conn = mysql.connect()
+		cur = conn.cursor(pymysql.cursors.DictCursor)
+		cur.execute("SELECT idt_usuario FROM mydb.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
+		user = cur.fetchone()
+
+		if user == None:
+			return  jsonify("Email ou Senha Incorretos")
+		else:
+			return jsonify(user)
+
+	except Exception as e:
+		print(e)
+	finally:
+		cur.close()
+		conn.close()
 
 @app.errorhandler(404)
 def page_not_found(e):
