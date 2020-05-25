@@ -1,4 +1,4 @@
-document.getElementsByTagName('body').addEventListener("load", onLoad);
+/*document.getElementsByTagName('body').addEventListener("load", onLoad);
 
 function onLoad(e){
     axios.get("http://127.0.0.1:5000/api/v1/usuarios/all")
@@ -9,4 +9,4 @@ function onLoad(e){
 
     e.preventDefault();
 
-}
+}*/
