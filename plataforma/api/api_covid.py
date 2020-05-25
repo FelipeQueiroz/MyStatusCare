@@ -318,8 +318,9 @@ def api_insert_user():
 	try:
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
+		ida_usuario = str(ida_usuario)
 		psw_usuario =	request.json.get('psw_usuario')
-		end_usuario 	=	request.json.get('end_usuario')
+		end_usuario =	request.json.get('end_usuario')
 		eml_usuario	= 	request.json.get('eml_usuario')
 		cod_cidade	= 	request.json.get('cod_cidade')
 		

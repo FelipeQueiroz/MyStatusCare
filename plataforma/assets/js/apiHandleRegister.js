@@ -47,7 +47,6 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     })
     .then(function (response) {
       console.log(response);
-      window.location.href = "../plataforma/index.html"
     })
     .catch(function (error) {
       var errorInput = document.getElementById('errorAlert');
