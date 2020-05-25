@@ -9,7 +9,7 @@
 def config_sql(app):
 	app.config['MYSQL_DATABASE_USER'] = 'root'
 	app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-	app.config['MYSQL_DATABASE_DB'] = 'mydb2'
+	app.config['MYSQL_DATABASE_DB'] = 'mydb'
 	app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 	app.config['DEBUG'] = True
 

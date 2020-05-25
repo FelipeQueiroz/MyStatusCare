@@ -319,13 +319,14 @@ def api_insert_user():
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
 		psw_usuario =	request.json.get('psw_usuario')
-		address 	=	request.json.get('end_usuario')
+		end_usuario 	=	request.json.get('end_usuario')
 		eml_usuario	= 	request.json.get('eml_usuario')
+		cod_cidade	= 	request.json.get('cod_cidade')
 		
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mydb2.tb_usuario(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario) VALUES (%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario))
+		cur.execute("INSERT INTO mydb.tb_usuario(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade) VALUES (%s,%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade))
 		conn.commit()
 		cur.close()
 		conn.close()
