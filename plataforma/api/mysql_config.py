@@ -15,7 +15,6 @@ def config_sql(app):
 
 
 
-
 '''
 metodo altenativo
 
