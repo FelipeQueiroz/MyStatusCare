@@ -42,17 +42,16 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
       end_usuario: endereco,
       psw_usuario: password,
       cod_cidade: cidade,
-      ida_cidade: idade
+      ida_usuario: idade
       
     })
     .then(function (response) {
-      console.log(response);
+      window.location.href = "../plataforma/index.html";
     })
     .catch(function (error) {
       var errorInput = document.getElementById('errorAlert');
       errorInput.style.display = "initial";
       errorInput.innerHTML += error;
-      console.log(error);
     });
     
     e.preventDefault();

@@ -318,7 +318,6 @@ def api_insert_user():
 	try:
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
-		ida_usuario = str(ida_usuario)
 		psw_usuario =	request.json.get('psw_usuario')
 		end_usuario =	request.json.get('end_usuario')
 		eml_usuario	= 	request.json.get('eml_usuario')
@@ -348,7 +347,7 @@ def api_login():
 		user = cur.fetchone()
 
 		if user == None:
-			return  jsonify("Email ou Senha Incorretos")
+			return  -1
 		else:
 			return jsonify(user)
 

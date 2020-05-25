@@ -4,19 +4,19 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     var password = document.getElementById('psw_usuario').value;
 
     
-    axios.post('http://127.0.0.1:5000/api/v1/insert/usuarios', {
+    axios.post('http://127.0.0.1:5000/api/v1/login', {
       eml_usuario: email,
       psw_usuario: password
     })
     .then(function (response) {
-        console.log(response);
+       
+      window.location.href = "../plataforma/index.html";
     })
     .catch(function (error) {
-      if(error == null){
-          console.log("email ou senha errado")
-      }
+      var alert = document.getElementById("alert");
+      alert.style.display = "block";
+      alert.innerHTML = "Email ou senha incorreto";
     });
     
     e.preventDefault();
   }
-
