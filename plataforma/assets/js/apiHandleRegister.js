@@ -1,8 +1,19 @@
 function getCities (){
+
+  const select = document.getElementById('cidadeInput');
+
   axios.get('http://127.0.0.1:5000/api/v1/cidade/all').then(response => {
     this.infos = response.data;
     for(var i = 0; i < infos.length; i++){
-      console.log(JSON.parse(infos[i]));
+      
+      console.log(this.infos.data[i].nme_cidade);
+      /*
+      var opt = document.createElement('option');
+      array = Object.entries(infos[i]);
+      opt.value += JSON.stringify(array[1]);
+      opt.innerHTML += JSON.stringify(array[2]);
+      select.appendChild(opt);
+      */
     }
     
   });
