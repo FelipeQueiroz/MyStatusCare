@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getHospital()">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background-color: #4e73df;">
             <div class="container-fluid d-flex flex-column p-0">
@@ -41,7 +41,7 @@
                         <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <div class="input-group-append">
-                                    <h1 style="font-size: 30px;color: #3d348b;">Seja bem-vindo, Valerie!</h1>
+                                    <h1 id="userName" style="font-size: 30px;color: #3d348b;">Seja bem-vindo, </h1>
                                 </div>
                             </div>
                         </form>
@@ -88,7 +88,7 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow" role="presentation">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span id="nav-link" class="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span></a>
                                     <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"
                                         role="menu"><a class="dropdown-item" role="presentation" href="profile.html"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Perfil</a><a class="dropdown-item" role="presentation" href="table.html"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Sintomas</a>
                                         <div
@@ -104,29 +104,6 @@
                     <div class="card-header py-3">
                         <div class="d-flex">
                             <p class="text-primary m-0 font-weight-bold col 10">Registro de hospitais: (Conforme a localização)</p>
-                            <div>
-                                <div class="modal fade" role="dialog" tabindex="-1" id="modalRegister">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Registro de sintoma</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <div class="form-group">
-                                                        <div><label>Escolha um sintoma:</label><select class="form-control" required=""><optgroup label="Sintomas:"><option value="Coriza" selected="">Coriza</option><option value="Cefaleia" selected="">Cefaleia</option><option value="Dor corporal">Dor corporal</option><option value="Fadiga">Fadiga</option><option value="Dor de garganta">Dor de garganta</option><option value="Tosse">Tosse</option><option value="">Febre</option><option value="Congestão nasal">Congestão nasal</option><option value="Falta de ar">Falta de ar</option><option value="Perda de apetite">Perda de apetite</option><option value="Náuseas">Náuseas</option></optgroup></select></div>
-                                                        <div
-                                                            class="mt-3"><label>Intensidade do sintoma:</label><input class="form-control" type="number" min="1" max="5" required=""></div>
-                                                    <div class="mt-3"><label>Data de início:</label><input class="form-control" type="date" required=""></div>
-                                                    <div class="mt-3"><label>Observações:</label><input class="form-control form-control-lg" type="text"></div>
-                                            </div>
-                                            </form>
-                                            <p></p>
-                                        </div>
-                                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="button">Adicionar</button></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div><input type="search" class="form-control form-control-sm mt-2" aria-controls="dataTable" placeholder="Pesquisar..."></div>
                 <div class="card-body">
                     <div class="table-responsive table-bordered table mt-3" id="dataTable">

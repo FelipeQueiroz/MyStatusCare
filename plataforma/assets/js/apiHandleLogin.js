@@ -9,8 +9,9 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
       psw_usuario: password
     })
     .then(function (response) {
-       
-      window.location.href = "../plataforma/index.html";
+      localStorage.id = response.data.idt_usuario;
+      sessionStorage.setItem("AuthenticationState", "Authenticated");
+      window.location.href = "../plataforma/index.html"
     })
     .catch(function (error) {
       var alert = document.getElementById("alert");
