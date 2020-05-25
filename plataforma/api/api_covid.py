@@ -36,7 +36,7 @@ def users():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_usuario;")
+		cur.execute("SELECT idt_usuario, nme_usuario, eml_usuario, ida_usuario, end_usuario, cod_cidade, pto_usuario FROM mydb.tb_usuario;")
 		all_users = cur.fetchall()
 		resp=jsonify(all_users)
 		return resp
@@ -207,7 +207,7 @@ def api_filter_user():
 	conn = mysql.connect()
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	cur.execute(query, to_filter)
-	result = cur.fetchall()   
+	result = cur.fetchall()
 
 	resp=jsonify(result)
 	return resp
@@ -325,7 +325,7 @@ def api_insert_user():
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mydb2.tb_usuario(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario) VALUES (%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario))
+		cur.execute("INSERT INTO mydb.tb_usuario(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario) VALUES (%s,%s,%s,%s,%s);",(nme_usuario,ida_usuario,address,psw_usuario,eml_usuario))
 		conn.commit()
 		cur.close()
 		conn.close()
@@ -333,6 +333,36 @@ def api_insert_user():
 		return "Registered"
 	except Exception as e:
 		return(str(e))
+
+@app.route('/api/v1/login', methods=['GET','POST'])
+def api_login():
+	try:
+		eml_usuario	= 	"alex@mail.com"   #request.json.get('eml_usuario')
+		psw_usuario =	"123"  #request.json.get('psw_usuario')
+
+		conn = mysql.connect()
+		cur = conn.cursor(pymysql.cursors.DictCursor)
+		cur.execute("SELECT idt_usuario FROM mydb.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
+		user = cur.fetchone()
+
+		if user == None:
+			return  jsonify("Email ou Senha Incorretos")
+		else:
+			return jsonify(user)
+
+	except Exception as e:
+		print(e)
+	finally:
+		cur.close()
+		conn.close()
+
+
+
+
+
+
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
