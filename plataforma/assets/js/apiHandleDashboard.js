@@ -11,6 +11,14 @@ function onLoad(e){
       userNav.innerHTML += " " + response.data[0].nme_usuario;
       pontuacao.innerHTML += " " + response.data[0].pto_usuario;
       var pont = response.data[0].pto_usuario;
+      var span = document.getElementById('risco');
+      if(pont <= 3){
+        span.innerHTML += " Estável"
+      } else if (pont <= 5){
+        span.innerHTML += " Preocupante"
+      } else if (pont <= 8){
+        span.innerHTML += " Vá para o hospital"
+      }
       //Grafico da clasificação de risco
       var ctxD = document.getElementById("ptoChart").getContext('2d');
       var myLineChart = new Chart(ctxD, {
@@ -19,9 +27,9 @@ function onLoad(e){
       labels: ["Pontuação"],
       datasets: [{
       
-      data: [pont, (5 - pont)],
-      backgroundColor: [ "#46BFBD", "#F7464A"],
-      hoverBackgroundColor: ["#5AD3D1", "#FF5A5E"]
+      data: [pont, (10 - pont)],
+      backgroundColor: [ "#F7464A", "#46BFBD"],
+      hoverBackgroundColor: ["#FF5A5E","#5AD3D1"]
       }]
       },
       options: {
@@ -95,8 +103,10 @@ function onLoad(e){
 };
 
 
-
-
+function logOff(){
+  localStorage.id = null;
+}
+//Função para bloquear a entrada de não usuários.
 if (sessionStorage.getItem('AuthenticationState') === null) {
   window.open("AccessDenied.html", "_self");
 }
