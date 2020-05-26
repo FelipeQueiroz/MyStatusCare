@@ -1,6 +1,15 @@
-.text-dark.mb-4 {
+
+.fadein {
+  opacity: 0;
+  -moz-transition: opacity 1.5s;
+  -webkit-transition: opacity 1.5s;
+  -o-transition: opacity 1.5s;
+  transition: opacity 1.5s;
 }
 
+body.loaded .fadein {
+  opacity: 1;
+}
 @media (min-width: 300px) {
   .float-none.p-5 {
     padding: 0 !important;

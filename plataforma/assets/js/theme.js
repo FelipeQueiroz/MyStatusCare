@@ -49,7 +49,3 @@
 })(jQuery); // End of use strict
 
 
-document.getElementById("btnAdd").setAttribute("onclick", "function(){document.getElementById('modalRegister').addClass('show')}");
-$('#btnAdd').on('click', function (e){
-  
-});

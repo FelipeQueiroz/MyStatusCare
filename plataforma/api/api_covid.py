@@ -8,7 +8,7 @@ from flask_cors import CORS
 #import requests
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 #logging.getLogger('flask_cors').level = logging.DEBUG
 
@@ -100,7 +100,7 @@ def hospital():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_hospital;")
+		cur.execute("SELECT nme_hospital, nme_cidade, nme_estado FROM tb_hospital INNER JOIN tb_cidade ON tb_hospital.cod_cidade = idt_cidade INNER JOIN tb_estado ON tb_hospital.cod_estado = tb_estado.idt_estado;")
 		all_hospital = cur.fetchall()
 		resp=jsonify(all_hospital)
 		return resp
@@ -142,12 +142,15 @@ def symptoms():
 		cur.close()
 		conn.close()
 
-@app.route('/api/v1/sintomas_usuario/all', methods=['GET'])
+@app.route('/api/v1/resources/sintomas_usuario', methods=['GET'])
 def user_symptoms():
 	try:
+		query_parameters = request.args
+		idt_usuario = query_parameters.get("idt_usuario")
+
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_sintomas_usuario;")
+		cur.execute("SELECT tb_sintomas.nme_sintoma, tb_usuario.nme_usuario from tb_sintomas_usuario INNER JOIN tb_sintomas ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario WHERE idt_usuario = %s;",(idt_usuario))
 		all_user_symptoms = cur.fetchall()
 		resp=jsonify(all_user_symptoms)
 		return resp
@@ -156,6 +159,7 @@ def user_symptoms():
 	finally:
 		cur.close()
 		conn.close()
+
 
 
 #filtro usuarios
@@ -262,56 +266,6 @@ def api_filter_hospital():
 	return resp
 
 
-@app.route('/api/v1/resources/sintomas', methods=['GET'])
-def api_filter_symptoms():
-	query_parameters = request.args
-
-	idt_sintoma = query_parameters.get("idt_sintoma")
-	nme_sintoma = query_parameters.get("nme_sintoma")
-	description = query_parameters.get("description")
-	pto_sintomas  = query_parameters.get("pto_sintomas")
-	cod_patologia = query_parameters.get("cod_patologia")
-	ftr_risco     = query_parameters.get("ftr_risco")
-
-
-	query = "SELECT * FROM tb_sintomas WHERE"
-	to_filter=[]
-	if idt_sintoma:
-		query += ' idt_sintoma=%s AND'
-		to_filter.append(idt_sintoma)
-
-	if nme_sintoma:
-		query += ' nme_sintoma=%s AND'
-		to_filter.append(nme_sintoma)
-	
-	if description:
-		query += ' description=%s AND'
-		to_filter.append(description)
-	
-	if pto_sintomas:
-		query += ' pto_sintomas=%s AND'
-		to_filter.append(pto_sintomas)
-
-	if cod_patologia:
-		query += ' cod_patologia=%s AND'
-		to_filter.append(cod_patologia)
-	if ftr_risco:
-		query += ' ftr_risco=%s AND'
-		to_filter.append(ftr_risco)
-
-	if not (nme_sintoma or description or pto_sintomas or cod_patologia or idt_sintoma or ftr_risco):
-		return page_not_found(404)
-
-	query = query[:-4] + ';'
-	
-	conn = mysql.connect()
-	cur = conn.cursor(pymysql.cursors.DictCursor)
-	cur.execute(query, to_filter)
-	result = cur.fetchall()   
-
-	resp=jsonify(result)
-	return resp
-
 
 @app.route('/api/v1/insert/usuarios', methods=['POST'])
 def api_insert_user():
@@ -333,29 +287,103 @@ def api_insert_user():
 		
 		return "Registered"
 	except Exception as e:
-		return(str(e))
+		return e
 
-@app.route('/api/v1/login', methods=['POST'])
-def api_login():
+@app.route('/api/v1/insert/sintoma', methods= ['POST',''])
+def api_insert_symptom():
+
+    query_parameters = request.args
+
+    idt_usuario = query_parameters.get("idt_usuario")
+    idt_sintoma = request.json.post('idt_sintoma')
+    dta_sintoma = request.json.post('dta_sintoma')
+
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur.execute("SELECT tb_sintomas.idt_sintoma from tb_sintomas_usuario INNER JOIN tb_sintomas ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario WHERE idt_usuario = %s",(idt_usuario))
+    sintomas = cur.fetchall()
+    close(cur,conn)
+
+    result = filtro_sintoma(idt_sintoma,sintomas)
+
+    if result == False:
+        return -1
+    else:
+
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("INSERT INTO mydb.tb_sintomas_usuario(cod_sintoma, cod_usuario, dta_sintoma) VALUES (%s,%s,%s)",(idt_sintoma, idt_usuario,dta_sintoma))
+        conn.commit()
+        close(cur,conn)
+
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("SELECT pto_usuario FROM mydb.tb_usuario WHERE idt_usuario=%s;",(idt_usuario))
+        pto1 = cur.fetchone()
+        close(cur,conn)
+
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("SELECT pto_sintomas FROM mydb.tb_sintomas WHERE idt_sintoma=%s;",(idt_sintoma))
+        pto2 = cur.fetchone()
+        close(cur,conn)
+
+        pto_atual= dictget(pto1)
+        pto_sint = dictget(pto2)
+
+        pto_final = pto_atual + pto_sint
+
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("UPDATE mydb.tb_usuario SET pto_usuario = %s WHERE idt_usuario = %s ",(pto_final, idt_usuario))
+        conn.commit()
+        close(cur,conn)
+
+        return "Sintoma Registrado"
+
+
+
+
+
+@app.route('/api/v1/resources/pontuacao', methods=['GET'])
+def show_pto():
+	idt_usuario = request.json.get('idt_usuario')
+
+	conn = mysql.connect()
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	cur.execute("SELECT pto_usuario FROM mydb.tb_usuario WHERE idt_usuario=%s",(idt_usuario))
+	result = cur.fetchone()
+	cur.close()
+	conn.close()
+	resp = jsonify(result)
+
+	return resp
+'''
+@app.route('/api/v1/resources/attpontuacao', methods=['GET'])
+def att_pto():
 	try:
-		eml_usuario	= 	request.json.get('eml_usuario')
-		psw_usuario =	request.json.get('psw_usuario')
+		idt_usuario = request.json.get('idt_usuario')
+
+
 
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT idt_usuario FROM mydb.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
-		user = cur.fetchone()
-
-		if user == None:
-			return  -1
-		else:
-			return jsonify(user)
-
-	except Exception as e:
-		print(e)
-	finally:
+		cur.execute("SELECT SUM(pto_sintomas) from tb_sintomas_usuario INNER JOIN tb_sintomas ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario WHERE idt_usuario = %s;",(idt_usuario))
+		result = cur.fetchone()
 		cur.close()
 		conn.close()
+
+		conn = mysql.connect()
+		cur = conn.cursor(pymysql.cursors.DictCursor)
+		cur.execute("INSERT INTO mydb.tb_usuario(pto_usuario,) VALUES (%s) WHERE idt_usuario=%s",(result,idt_usuario))
+		conn.commit()
+		cur.close()
+		conn.close()
+		
+		return "ATT"
+	except Exception as e:
+		print(e)
+'''
 
 		
 @app.errorhandler(404)
@@ -363,7 +391,19 @@ def page_not_found(e):
 	return "<h1>404</h1><p>The resource could not be found.</p>", 404
 
 
-
+#INSERT INTO mydb.tb_sintomas_usuario(cod_sintoma, cod_usuario) VALUES (1,1);
 
 if __name__ == "__main__":
 	app.run()
+
+
+
+
+'''
+SELECT nme_hospital, nme_cidade, nme_estado FROM tb_hospital INNER JOIN tb_cidade ON tb_hospital.cod_cidade = idt_cidade
+INNER JOIN tb_estado ON tb_hospital.cod_estado = tb_estado.idt_estado;'''
+
+
+'''SELECT tb_sintomas.nme_sintoma, tb_usuario.nme_usuario from tb_sintomas_usuario INNER JOIN tb_sintomas
+ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma
+INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario;'''

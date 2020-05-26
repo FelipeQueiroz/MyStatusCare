@@ -10,7 +10,25 @@ function onLoad(e){
       username.innerHTML += " " + response.data[0].nme_usuario + " !";
       userNav.innerHTML += " " + response.data[0].nme_usuario;
       pontuacao.innerHTML += " " + response.data[0].pto_usuario;
-      console.log(response.data[0].nme_usuario)
+      var pont = response.data[0].pto_usuario;
+      //Grafico da clasificação de risco
+      var ctxD = document.getElementById("ptoChart").getContext('2d');
+      var myLineChart = new Chart(ctxD, {
+      type: 'doughnut',
+      data: {
+      labels: ["Pontuação"],
+      datasets: [{
+      
+      data: [pont, (5 - pont)],
+      backgroundColor: [ "#46BFBD", "#F7464A"],
+      hoverBackgroundColor: ["#5AD3D1", "#FF5A5E"]
+      }]
+      },
+      options: {
+      responsive: true
+      }
+      });
+
     })
 
 }
