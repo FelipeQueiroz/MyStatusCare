@@ -22,6 +22,7 @@ Funcionalidades
  - Banco de dados: A escolha foi fazer em MySQL para uma seguridade e efetividade melhor, o sistema inteiro foi modelado a partir do esquema criado com o banco de dados, onde populamos cidades, estados, hospitais e sintomas.
 
 Participantes e funções:
+ 
  Felipe Queiroz - Front-end
 
  Gabriel Rocha - API/Back-end
