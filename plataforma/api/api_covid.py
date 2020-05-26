@@ -8,8 +8,7 @@ from flask_cors import CORS
 #import requests
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
-
+CORS(app)
 #logging.getLogger('flask_cors').level = logging.DEBUG
 
 app.config["DEBUG"] = True
@@ -150,7 +149,7 @@ def user_symptoms():
 
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT tb_sintomas.nme_sintoma, tb_usuario.nme_usuario from tb_sintomas_usuario INNER JOIN tb_sintomas ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario WHERE idt_usuario = %s;",(idt_usuario))
+		cur.execute("SELECT tb_sintomas.nme_sintoma, tb_usuario.nme_usuario, tb_sintomas_usuario.dta_sintoma from tb_sintomas_usuario INNER JOIN tb_sintomas ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario WHERE idt_usuario = %s;",(idt_usuario))
 		all_user_symptoms = cur.fetchall()
 		resp=jsonify(all_user_symptoms)
 		return resp
@@ -266,6 +265,29 @@ def api_filter_hospital():
 	return resp
 
 
+@app.route('/api/v1/login', methods=['POST'])
+def api_login():
+	try:
+		eml_usuario	= 	request.json.get('eml_usuario')
+		psw_usuario =	request.json.get('psw_usuario')
+
+		conn = mysql.connect()
+		cur = conn.cursor(pymysql.cursors.DictCursor)
+		cur.execute("SELECT idt_usuario FROM mydb.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
+		user = cur.fetchone()
+
+		if user == None:
+			return  -1
+		else:
+			return jsonify(user)
+
+	except Exception as e:
+		print(e)
+	finally:
+		cur.close()
+		conn.close()
+
+
 
 @app.route('/api/v1/insert/usuarios', methods=['POST'])
 def api_insert_user():
@@ -289,14 +311,14 @@ def api_insert_user():
 	except Exception as e:
 		return e
 
-@app.route('/api/v1/insert/sintoma', methods= ['POST',''])
+@app.route('/api/v1/insert/sintoma', methods= ['POST','GET'])
 def api_insert_symptom():
 
     query_parameters = request.args
 
     idt_usuario = query_parameters.get("idt_usuario")
-    idt_sintoma = request.json.post('idt_sintoma')
-    dta_sintoma = request.json.post('dta_sintoma')
+    idt_sintoma = request.json.get('idt_sintoma')
+    dta_sintoma = request.json.get('dta_sintoma')
 
     conn = mysql.connect()
     cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -316,33 +338,41 @@ def api_insert_symptom():
         conn.commit()
         close(cur,conn)
 
-        conn = mysql.connect()
-        cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("SELECT pto_usuario FROM mydb.tb_usuario WHERE idt_usuario=%s;",(idt_usuario))
-        pto1 = cur.fetchone()
-        close(cur,conn)
+
+        pto_sint = sintinfo(idt_sintoma)
+ 
 
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("SELECT pto_sintomas FROM mydb.tb_sintomas WHERE idt_sintoma=%s;",(idt_sintoma))
-        pto2 = cur.fetchone()
-        close(cur,conn)
-
-        pto_atual= dictget(pto1)
-        pto_sint = dictget(pto2)
-
-        pto_final = pto_atual + pto_sint
-
-        conn = mysql.connect()
-        cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("UPDATE mydb.tb_usuario SET pto_usuario = %s WHERE idt_usuario = %s ",(pto_final, idt_usuario))
+        cur.execute("UPDATE tb_usuario SET pto_usuario = pto_usuario + %s where idt_usuario = %s ;",(pto_sint, idt_usuario))
         conn.commit()
         close(cur,conn)
 
         return "Sintoma Registrado"
 
 
+@app.route('/api/v1/insert/temperatura', methods=['POST', 'GET'])
+def api_insert_usertemp():
+    try:
+        query_parameters = request.args
+        idt_usuario = query_parameters.get('idt_usuario')
 
+        dta_temperatura = request.json.get('dta_temperatura')
+        vlr_temperatura = request.json.get('vlr_temperatura')
+
+
+
+
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("INSERT INTO mydb.tb_temperatura(dta_temperatura, vlr_temperatura, cod_usuario) VALUES (%s,%s,%s)",(dta_temperatura, vlr_temperatura,idt_usuario))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return "Temp Registrada"
+    except Exception as e:
+        return e
 
 
 @app.route('/api/v1/resources/pontuacao', methods=['GET'])
@@ -358,6 +388,22 @@ def show_pto():
 	resp = jsonify(result)
 
 	return resp
+
+@app.route('/api/v1/resources/temperatura', methods=['GET'])
+def show_temperature():
+    query_parameters = request.args
+    idt_usuario = query_parameters.get('idt_usuario')
+
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur.execute("SELECT idt_usuario, dta_temperatura, vlr_temperatura FROM tb_usuario INNER JOIN tb_temperatura ON idt_usuario = cod_usuario WHERE idt_usuario=%s;",(idt_usuario))
+    result = cur.fetchall()
+    cur.close()
+    conn.close()
+    resp = jsonify(result)
+
+    return resp
+
 '''
 @app.route('/api/v1/resources/attpontuacao', methods=['GET'])
 def att_pto():

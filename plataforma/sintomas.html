@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Sintomas - MyStatusCare</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -24,9 +24,9 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="sintomas.html"><i class="fas fa-table"></i><span>Quadro de sintomas</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="sintomas.html"><i class="fas fa-table"></i><span>Quadro de sintomas</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="hospital.html"><i class="fas fa-briefcase-medical"></i><span>Lista de hospitais</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
@@ -36,13 +36,11 @@
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                        <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <div class="input-group-append">
                                     <h1 id="userName" style="font-size: 30px;color: #3d348b;">Seja bem-vindo, </h1>
                                 </div>
                             </div>
-                        </form>
                         <ul class="nav navbar-nav flex-nowrap ml-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
@@ -79,7 +77,7 @@
                                             <div class="modal-body">
                                                 <form id="addSintoma">
                                                     <div class="form-group">
-                                                        <div><label>Escolha um sintoma:</label><select class="form-control" required id="selectSintomas"><optgroup label="Sintomas:"></optgroup></select></div>
+                                                        <div><label>Escolha um sintoma:</label><select class="form-control" required id="select_sintoma"><optgroup label="Sintomas:"></optgroup></select></div>
                                                     <div class="mt-3"><label>Data de início:</label><input class="form-control" type="date" required id="dataSintoma"></div>
                                             </div>
                                             <p></p>
@@ -116,15 +114,15 @@
                                         <div class="modal-header">
                                             <h4 class="modal-title">Registro de temperatura corporal</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
                                         <div class="modal-body">
-                                            <form>
+                                            <form id="addTemperatura">
                                                 <div class="form-group">
-                                                    <div><label>Temperatura ( em ºC ):</label><input class="form-control" type="text" required=""></div>
-                                                    <div class="mt-3"><label>Intesidade:</label><input class="form-control" type="number" min="1" max="5" required=""></div>
-                                                    <div class="mt-3"><label>Data de registro:</label><input class="form-control" type="date"></div>
+                                                    <div><label>Temperatura ( em ºC ):</label><input id="valorTemperatura" class="form-control" type="text" required=""></div>
+                                                    <div class="mt-3"><label>Data de registro:</label><input id="dataTemperatura" class="form-control" type="date"></div>
                                                 </div>
-                                            </form>
+                                            
                                         </div>
-                                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="button">Salvar</button></div>
+                                        <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Salvar</button></div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -137,36 +135,10 @@
                             <thead>
                                 <tr>
                                     <th>Temperatura</th>
-                                    <th>Intensidade:</th>
                                     <th>Data de registro:</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>38.5ºC</td>
-                                    <td>2</td>
-                                    <td>20/03/2020</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>39.1ºC</td>
-                                    <td>3</td>
-                                    <td>24/03/2020<br></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>39.8ºC</td>
-                                    <td>4</td>
-                                    <td>27/03/2020<br></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>40.1ºC</td>
-                                    <td>4</td>
-                                    <td>1/04/2020<br></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
+                            <tbody id="tableRowTemp"></tbody>
                         </table>
                     </div>
                 </div>
@@ -187,8 +159,10 @@
     <script src="assets/js/theme.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
     <script src="assets/js/apiHandleDashboard.js"></script>
     <script src="assets/js/apiHandleSintoma.js"></script>
+    
 </body>
 
 </html>
