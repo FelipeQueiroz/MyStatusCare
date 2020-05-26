@@ -20,3 +20,8 @@ Funcionalidades
  - Front end: O projeto visual foi feito em cima de uma ferramenta chamada Bootstrap Studio, depois foi implementado as requisições via AXIOS, onde foi feita toda conexao front-back-banco. Algumas funcionalidades a mais foram feitas com JavaScript Puro.
  - Back end: A ideia foi fazer uma API em python com a biblioteca flask, onde todos os selects, inserts foram feitos e o sistema de pontuação também.
  - Banco de dados: A escolha foi fazer em MySQL para uma seguridade e efetividade melhor, o sistema inteiro foi modelado a partir do esquema criado com o banco de dados, onde populamos cidades, estados, hospitais e sintomas.
+
+Participantes e funções:
+Felipe Queiroz - Front-end
+Gabriel Rocha - API/Back-end
+Felipe da Silva e Alex Moreira - Banco de dados.
