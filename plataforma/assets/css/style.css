@@ -20,6 +20,9 @@ body.loaded .fadein {
   .card-group.p-3 {
     display: inline;
   }
+  #userName{
+    display: none;
+  }
 }
 
 @media (max-width: 576px) {
@@ -39,4 +42,5 @@ body.loaded .fadein {
     display: initial !important;
   }
 }
+
 

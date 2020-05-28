@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Login - Brand</title>
+    <title>Login - MyStatusCare</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="356568272077-b3evlq2n62ji3kismd19cjb1ub5l4d69.apps.googleusercontent.com">
 </head>
 
 <body class="bg-gradient-primary">
@@ -38,7 +40,8 @@
                                                 <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
                                             </div>
                                         </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Entrar</button>
-                                        <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Login pelo Google</a>
+                                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                        <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" onclick="onSignIn()" role="button"><i class="fab fa-google"></i>&nbsp; Login pelo Google</a>
                                         <hr>
                                     </form>
                                     <div class="text-center"><a class="small" href="forgot-password.html">Esqueceu a senha?</a></div>
@@ -59,6 +62,7 @@
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/apiHandleLogin.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 </body>
 

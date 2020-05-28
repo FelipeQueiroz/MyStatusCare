@@ -22,20 +22,25 @@ function onLoad(e){
       //Grafico da clasificação de risco
       var ctxD = document.getElementById("ptoChart").getContext('2d');
       var myLineChart = new Chart(ctxD, {
-      type: 'doughnut',
-      data: {
-      labels: ["Pontuação"],
-      datasets: [{
       
-      data: [pont, (10 - pont)],
-      backgroundColor: [ "#F7464A", "#46BFBD"],
-      hoverBackgroundColor: ["#FF5A5E","#5AD3D1"]
-      }]
+
+      type:"doughnut",
+      data:{
+        labels:["Direct"],
+        datasets:[{
+          label:"",
+          backgroundColor:["#b24c63","#1cc88a"],
+          borderColor:["#ffffff","#ffffff"],
+          data:[pont, (10 - pont)]
+        }]
       },
-      options: {
-      responsive: true
+      options:{
+        maintainAspectRatio:false,
+        legend:{
+          display:false
+        },
+        title:{}
       }
-      
 
       });
      
