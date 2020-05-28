@@ -1,0 +1,426 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `mydb` ;
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_pais`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_pais` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_pais` (
+  `idt_pais` INT NOT NULL,
+  `nme_pais` VARCHAR(45) NULL,
+  PRIMARY KEY (`idt_pais`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_estado`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_estado` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_estado` (
+  `idt_estado` INT NOT NULL AUTO_INCREMENT,
+  `nme_estado` VARCHAR(45) NOT NULL,
+  `sgl_estado` VARCHAR(2) NULL,
+  `cod_pais` INT NULL,
+  PRIMARY KEY (`idt_estado`),
+  CONSTRAINT `fk_tb_estado_tb_pais`
+    FOREIGN KEY (`cod_pais`)
+    REFERENCES `mydb`.`tb_pais` (`idt_pais`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_cidade`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_cidade` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_cidade` (
+  `idt_cidade` INT NOT NULL AUTO_INCREMENT,
+  `cod_estado` INT NULL,
+  `nme_cidade` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idt_cidade`),
+  CONSTRAINT `fk_tb_cidade_tb_estado`
+    FOREIGN KEY (`cod_estado`)
+    REFERENCES `mydb`.`tb_estado` (`idt_estado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_patologia`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_patologia` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_patologia` (
+  `idt_patologia` INT NOT NULL AUTO_INCREMENT,
+  `nme_patologia` VARCHAR(45) NULL,
+  PRIMARY KEY (`idt_patologia`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_usuario` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_usuario` (
+  `idt_usuario` INT NOT NULL AUTO_INCREMENT,
+  `nme_usuario` VARCHAR(45) NOT NULL,
+  `eml_usuario` VARCHAR(45) NOT NULL,
+  `ida_usuario` INT NOT NULL,
+  `end_usuario` VARCHAR(45) NOT NULL,
+  `cod_cidade` INT NULL,
+  `pto_usuario` INT NULL,
+  `psw_usuario` VARCHAR(10) NULL,
+  `cod_patologia` INT NULL,
+  PRIMARY KEY (`idt_usuario`),
+  CONSTRAINT `fk_tb_usuario_tb_cidade`
+    FOREIGN KEY (`cod_cidade`)
+    REFERENCES `mydb`.`tb_cidade` (`idt_cidade`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_usuario_tb_patologia`
+    FOREIGN KEY (`cod_patologia`)
+    REFERENCES `mydb`.`tb_patologia` (`idt_patologia`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_sintomas`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_sintomas` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_sintomas` (
+  `idt_sintoma` INT NOT NULL AUTO_INCREMENT,
+  `nme_sintoma` VARCHAR(45) NULL,
+  `pto_sintomas` INT NULL,
+  `cod_patologia` INT NULL,
+  `ftr_risco` VARCHAR(45) BINARY NULL,
+  PRIMARY KEY (`idt_sintoma`),
+  CONSTRAINT `fk_tb_sintomas_tb_patologia`
+    FOREIGN KEY (`cod_patologia`)
+    REFERENCES `mydb`.`tb_patologia` (`idt_patologia`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_sintomas_usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_sintomas_usuario` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_sintomas_usuario` (
+  `cod_sintoma` INT NULL,
+  `cod_usuario` INT NULL,
+  `dta_sintoma` DATE NULL,
+  CONSTRAINT `fk_tb_sintomas_usuario_tb_sintomas`
+    FOREIGN KEY (`cod_sintoma`)
+    REFERENCES `mydb`.`tb_sintomas` (`idt_sintoma`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_sintomas_usuario_tb_usuario`
+    FOREIGN KEY (`cod_usuario`)
+    REFERENCES `mydb`.`tb_usuario` (`idt_usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_hospital`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_hospital` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_hospital` (
+  `idt_hospital` INT NOT NULL,
+  `nme_hospital` VARCHAR(80) NULL,
+  `end_hospital` VARCHAR(45) NULL,
+  `bairro_hospital` VARCHAR(45) NULL,
+  `cod_cidade` INT NULL,
+  `cod_estado` INT NULL,
+  PRIMARY KEY (`idt_hospital`),
+  CONSTRAINT `fk_tb_hospital_tb_cidade`
+    FOREIGN KEY (`cod_cidade`)
+    REFERENCES `mydb`.`tb_cidade` (`idt_cidade`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_hospital_tb_estado`
+    FOREIGN KEY (`cod_estado`)
+    REFERENCES `mydb`.`tb_estado` (`idt_estado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_temperatura`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`tb_temperatura` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`tb_temperatura` (
+  `dta_temperatura` DATE NOT NULL,
+  `vlr_temperatura` FLOAT NULL,
+  `cod_usuario` INT NOT NULL,
+  CONSTRAINT `fk_tb_temperatura_tb_usuario`
+    FOREIGN KEY (`cod_usuario`)
+    REFERENCES `mydb`.`tb_usuario` (`idt_usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_pais`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_pais` (`idt_pais`, `nme_pais`) VALUES (001, 'Brasil');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_estado`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (001, 'Acre', 'AC', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (002, 'Alagoas', 'AL', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (003, 'Amapá', 'AP', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (004, 'Amazonas', 'AM', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (005, 'Bahia', 'BA', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (006, 'Ceará', 'CE', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (007, 'Espírito Santo', 'ES', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (008, 'Goiás', 'GO', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (009, 'Maranhão', 'MA', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (010, 'Mato Grosso', 'MT', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (011, 'Mato grosso do Sul', 'MS', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (012, 'Minas Gerais', 'MG', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (013, 'Pará', 'PA', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (014, 'Paraíba', 'PB', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (015, 'Paraná', 'PR', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (016, 'Pernambuci', 'PE', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (017, 'Piauí', 'PI', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (018, 'Rio de Janeiro', 'RJ', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (019, 'Rio Grande do Norte', 'RN', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (020, 'Rio Grande do Sul', 'RS', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (021, 'Rondônia', 'RO', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (022, 'Roraima', 'RR', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (023, 'Santa Catarina', 'SC', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (024, 'São Paulo', 'SP', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (025, 'Sergipe', 'SE', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (026, 'Tocantins', 'TO', 001);
+INSERT INTO `mydb`.`tb_estado` (`idt_estado`, `nme_estado`, `sgl_estado`, `cod_pais`) VALUES (027, 'Distrito Federal', 'DF', 001);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_cidade`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (001, 001, 'Rio Branco');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (002, 002, 'Maceió');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (003, 003, 'Macapá');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (004, 004, 'Manaus');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (005, 005, 'Salvador');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (006, 006, 'Fortaleza');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (007, 007, 'Vitória');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (008, 008, 'Goiânia');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (009, 009, 'São Luís');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (010, 010, 'Cuiabá');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (011, 011, 'Campo Grande');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (012, 012, 'Belo Horizonte');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (013, 013, 'Belém');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (014, 014, 'João Pessoa');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (015, 015, 'Curitiba');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (016, 016, 'Recife');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (017, 017, 'Teresina');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (018, 018, 'Rio de Janiero');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (019, 019, 'Natal');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (020, 020, 'Porto Alegre');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (021, 021, 'Porto Velho');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (022, 022, 'Bos Vista');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (023, 023, 'Florianópolis');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (024, 024, 'São Paulo');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (025, 025, 'Aracaju');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (026, 026, 'Palmas');
+INSERT INTO `mydb`.`tb_cidade` (`idt_cidade`, `cod_estado`, `nme_cidade`) VALUES (027, 027, 'Brasília');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_patologia`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_patologia` (`idt_patologia`, `nme_patologia`) VALUES (001, 'COVID-19');
+INSERT INTO `mydb`.`tb_patologia` (`idt_patologia`, `nme_patologia`) VALUES (002, 'Dengue');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_usuario`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_usuario` (`idt_usuario`, `nme_usuario`, `ida_usuario`, `end_usuario`, `cod_cidade`, `pto_usuario`, `psw_usuario`, `cod_patologia`) VALUES (001, 'Alex Moreira', 29, 'SHIGS 706 Conjunto M Casa 09', 027, NULL, NULL, NULL);
+INSERT INTO `mydb`.`tb_usuario` (`idt_usuario`, `nme_usuario`, `ida_usuario`, `end_usuario`, `cod_cidade`, `pto_usuario`, `psw_usuario`, `cod_patologia`) VALUES (002, 'Jorge', 30, 'SQSW 304 Bloco C Apt 401', 027, NULL, NULL, NULL);
+INSERT INTO `mydb`.`tb_usuario` (`idt_usuario`, `nme_usuario`, `ida_usuario`, `end_usuario`, `cod_cidade`, `pto_usuario`, `psw_usuario`, `cod_patologia`) VALUES (003, 'Felipe Cardoso', 35, 'Area Especial 04 Residencial Maestri Guara 2', 027, NULL, '', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_sintomas`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (001, 'Coriza', 1, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (002, 'Tosse', 1, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (003, 'Febre', 3, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (004, 'Cansaço', 2, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (005, 'Dor de Cabeça', 2, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (006, 'Congestionamento Nasal', 1, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (007, 'Diarreia', 2, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (008, 'Dor na Garganta', 1, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (009, 'Dificuldade para Respirar', 3, 001, '0');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (010, 'Diabetes', 2, 001, '1');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (011, 'Paciente em Tratamento Oncológico', 3, 001, '1');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (012, 'Idade acima de 60 anos', 3, 001, '1');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (013, 'Gestante', 2, 001, '1');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (014, 'Imunossuprimido', 2, 001, '1');
+INSERT INTO `mydb`.`tb_sintomas` (`idt_sintoma`, `nme_sintoma`, `pto_sintomas`, `cod_patologia`, `ftr_risco`) VALUES (015, 'Pressão Alterada', 3, 001, '1');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_sintomas_usuario`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (001, 001, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (002, 001, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (003, 001, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (004, 001, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (010, 002, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (012, 002, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (003, 002, NULL);
+INSERT INTO `mydb`.`tb_sintomas_usuario` (`cod_sintoma`, `cod_usuario`, `dta_sintoma`) VALUES (004, 002, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_hospital`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (001, 'Hospital Regional da Asa Norte', 'SMHN Quadra 2', 'Asa Norte', 027, 027);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (002, 'Hospital Geral de Clínicas de Rio Branco', NULL, NULL, 001, 001);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (003, 'HOSPITAL ESCOLA DR. HÉLVIO AUTO', NULL, NULL, 001, 002);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (004, 'Instituto da Criança do Amazonas ', NULL, NULL, NULL, 004);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (005, 'Instituto da Mulher Dona Lindu', NULL, NULL, NULL, 004);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (006, 'Hospital Infantil Dr. Fajardo', NULL, NULL, NULL, 004);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (007, 'Hosiptal de Referencia Ana Braga', NULL, NULL, NULL, 004);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (008, 'Hospital e Pronto Socorro da Criança Zona Leste', NULL, NULL, NULL, 004);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (009, 'Hospital Delphina Rinaldi Abdel Aziz', NULL, NULL, NULL, 004);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (010, 'Centro de Referência em Doenças Transmissíveis (CDT),', NULL, NULL, NULL, 003);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (011, 'Instituto Couto Maia (ICON)', NULL, NULL, NULL, 005);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (012, 'Hospital São José', NULL, NULL, NULL, 006);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (013, 'Hospital Estadual Jayme dos Santos Neves - HEJSN ', NULL, NULL, NULL, 007);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (014, 'Hospital Infantil Nossa Senhora da Glória - HINSG', NULL, NULL, NULL, 007);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (015, 'Hospital Estadual de Doenças Tropicais - HDT', NULL, NULL, NULL, 008);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (016, 'Hospital Estadual Materno Infantil', NULL, NULL, NULL, 008);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (017, 'Hospital Presidente Vargas', NULL, NULL, NULL, 009);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (018, 'Eduardo de Menezes', NULL, NULL, NULL, 012);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (019, 'Hospital Universitário Maria Aparecida Pedrosian', NULL, NULL, NULL, 011);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (020, 'Hospital Universitário Julio Muller', NULL, NULL, NULL, 010);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (021, 'Hospital Regional Abelardo Santos (Belém)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (022, 'Fundação Santa Casa de Misericórdia do Pará (Belém)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (023, 'Hospital Regional do Baixo Amazonas (Santarém)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (024, 'Hospital Regional do Sudeste do Pará (Marabá)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (025, 'Hospital regional de Conceição do Araguaia (Conceição do', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (026, 'Hospital Regional Público do Araguaia (Redenção)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (027, 'Hospital Regional Público da Transamazônica (Altamira)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (028, 'Hospital Regional Público do Leste (Paragominas)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (029, 'Hospital Regional de Tucuruí (Tucurui)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (030, 'Hospital Regional público do Marajo (Breves)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (031, 'Hospital Universitário Joao de Barros Barreto (HUJBB)', NULL, NULL, NULL, 013);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (032, 'Hospital Clementino Fraga ', NULL, NULL, NULL, 014);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (033, 'Hospital Universitário Lauro Wanderley', NULL, NULL, NULL, 014);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (034, 'Hospital Correia Picanço ', NULL, NULL, NULL, 016);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (035, 'Hospital Universitário Oswaldo Cruz ', NULL, NULL, NULL, 016);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (036, 'Instituto de Doenças Tropicais Natan Portela - IDTNP', NULL, NULL, NULL, 017);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (037, 'Hospital Universitário do Oeste do Paraná - Cascavel', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (038, 'Complexo Hospitalar do Trabalhador - Curitiba', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (039, 'Hospital Universitário da Região Norte do Paraná - Londrina', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (040, 'Hospital de Ensino São Lucas - FAG - Cascavel', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (041, 'Fundação Oswaldo Cruz ', NULL, NULL, NULL, 018);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (042, 'Hospital Dra. Giselda Trigueiro - UTI - Natal', NULL, NULL, NULL, 019);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (043, 'Hospital Maria Alice Fernandes - UTI Infantil - Natal', NULL, NULL, NULL, 019);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (044, 'Centro de Medicina Tropical - CEMETRON - responsáveis pelos', NULL, NULL, NULL, 021);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (045, 'HOSPITAL INFANTIL COSME DAMIÃO - responsáveis pelas crianças', NULL, NULL, NULL, 021);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (046, 'HOSPITAL GERAL DE RORAIMA HGR', NULL, NULL, NULL, 022);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (047, 'HOSPITAL DA CRIANCA SANTO ANTONIO', NULL, NULL, NULL, 022);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (048, 'Hospital Nossa Senhora da Conceição (Porto Alegre', NULL, NULL, NULL, 020);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (049, 'Hospital Universitário de Canoas (Canoas)', NULL, NULL, NULL, 020);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (050, 'Hospital de Clínicas de Porto Alegre', NULL, NULL, NULL, 020);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (051, 'Hospital Infantil Joana Gusmão (crianças até 15 anos)', NULL, NULL, NULL, 023);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (052, 'Hospital Nereu Ramos (adulto) ', NULL, NULL, NULL, 023);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (053, ' Hospital Governador João Alves Filho (Hospital de Urgências de', NULL, NULL, NULL, 025);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (054, 'Instituto de Infectologia Emílio Ribas', NULL, NULL, NULL, 024);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (055, 'Hospital Geral de Palmas (HGP) ', NULL, NULL, NULL, 026);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (056, 'Hospital de Referencia Estadual de Alta Comp. Dr. Carlos Macieira', NULL, NULL, NULL, 009);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (057, 'Hospital Municipal de Foz do Iguaçu Padre German Lauck', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (058, 'Hospital Regional do Litoral', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (059, 'Hospital Universitário Regional de Maringá', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (060, 'Hospital Universitário Regional dos Campos Gerais', NULL, NULL, NULL, 015);
+INSERT INTO `mydb`.`tb_hospital` (`idt_hospital`, `nme_hospital`, `end_hospital`, `bairro_hospital`, `cod_cidade`, `cod_estado`) VALUES (061, 'Hospital Rafael Fernandes', NULL, NULL, NULL, 019);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `mydb`.`tb_temperatura`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mydb`;
+INSERT INTO `mydb`.`tb_temperatura` (`dta_temperatura`, `vlr_temperatura`, `cod_usuario`) VALUES ('2020-01-01', 37, 001);
+INSERT INTO `mydb`.`tb_temperatura` (`dta_temperatura`, `vlr_temperatura`, `cod_usuario`) VALUES ('2020-01-02', 38, 001);
+INSERT INTO `mydb`.`tb_temperatura` (`dta_temperatura`, `vlr_temperatura`, `cod_usuario`) VALUES ('2020-01-03', 39, 001);
+INSERT INTO `mydb`.`tb_temperatura` (`dta_temperatura`, `vlr_temperatura`, `cod_usuario`) VALUES ('2020-01-02', 37, 002);
+INSERT INTO `mydb`.`tb_temperatura` (`dta_temperatura`, `vlr_temperatura`, `cod_usuario`) VALUES ('2020-01-03', 37.5, 002);
+INSERT INTO `mydb`.`tb_temperatura` (`dta_temperatura`, `vlr_temperatura`, `cod_usuario`) VALUES ('2020-01-04', 38, 002);
+
+COMMIT;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
