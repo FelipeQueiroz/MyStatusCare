@@ -3,7 +3,7 @@ function getCities (){
 
   const select = document.getElementById('cod_cidade');
 
-  axios.get('http://127.0.0.1:5000/api/v1/cidade/all').then(response => {
+  axios.get('http://localhost/api/v1/cidade/all').then(response => {
     this.infos = response.data;
     for(var i = 0; i < infos.length; i++){
       
@@ -36,7 +36,7 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     var userArray = new Array(user,email,endereco);
 
     
-    axios.post('http://127.0.0.1:5000/api/v1/insert/usuarios', {
+    axios.post('http://localhost/api/v1/insert/usuarios', {
       nme_usuario: user,
       eml_usuario: email,
       end_usuario: endereco,

@@ -4,7 +4,7 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     var password = document.getElementById('psw_usuario').value;
 
     
-    axios.post('http://127.0.0.1:5000/api/v1/login', {
+    axios.post('http://localhost/api/v1/login', {
       eml_usuario: email,
       psw_usuario: password
     })
