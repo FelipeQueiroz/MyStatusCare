@@ -292,6 +292,7 @@ def api_login():
 @app.route('/api/v1/insert/usuarios', methods=['POST'])
 def api_insert_user():
 	try:
+		idt_usuario = 	request.json.get('idt_usuario') 
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
 		psw_usuario =	request.json.get('psw_usuario')
@@ -303,7 +304,7 @@ def api_insert_user():
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mystatuscare.tb_usuario(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario))
+		cur.execute("INSERT INTO mystatuscare.tb_usuario(idt_usuario,nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(idt_usuario,nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario))
 		conn.commit()
 		cur.close()
 		conn.close()

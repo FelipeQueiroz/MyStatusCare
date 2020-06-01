@@ -27,7 +27,6 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
 
 var user = document.getElementById('nme_usuario').value;
 var email = document.getElementById('eml_usuario').value;
-
 user.innerHTML += sessionStorage.getItem('name');
 email.innerHTML += sessionStorage.getItem('email');
 
@@ -36,10 +35,11 @@ email.innerHTML += sessionStorage.getItem('email');
     var idade = document.getElementById('ida_usuario').value;
     var endereco = document.getElementById('end_usuario').value;
     var password = document.getElementById('psw_usuario').value;
-    var userArray = new Array(user,email,endereco);
+    
 
     
     axios.post('http://127.0.0.1:5000/api/v1/insert/usuarios', {
+      idt_usuario: sessionStorage.getItem('id'),
       nme_usuario: user,
       eml_usuario: email,
       end_usuario: endereco,
