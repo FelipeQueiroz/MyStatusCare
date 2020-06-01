@@ -35,6 +35,7 @@ DROP TABLE IF EXISTS `mydb`.`tb_estado` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`tb_estado` (
   `idt_estado` INT NOT NULL AUTO_INCREMENT,
   `nme_estado` VARCHAR(45) NOT NULL,
+  `eml_estado` VARCHAR(45) NOT NULL,
   `sgl_estado` VARCHAR(2) NULL,
   `cod_pais` INT NULL,
   PRIMARY KEY (`idt_estado`),

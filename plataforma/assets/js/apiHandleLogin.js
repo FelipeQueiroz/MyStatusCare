@@ -21,7 +21,7 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     
     e.preventDefault();
   }
-  function onSignIn(googleUser) {
+  function (googleUser) {
 
           // Useful data for your client-side scripts:
           var profile = googleUser.getBasicProfile();
