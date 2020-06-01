@@ -35,7 +35,7 @@ def users():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_usuario;")
+		cur.execute("SELECT * FROM mystatuscare.tb_usuario;")
 		all_users = cur.fetchall()
 		resp=jsonify(all_users)
 		return resp
@@ -51,7 +51,7 @@ def cities():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_cidade;")
+		cur.execute("SELECT * FROM mystatuscare.tb_cidade;")
 		all_cities = cur.fetchall()
 		resp=jsonify(all_cities)
 		return resp
@@ -67,7 +67,7 @@ def country():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_pais;")
+		cur.execute("SELECT * FROM mystatuscare.tb_pais;")
 		all_country = cur.fetchall()
 		resp=jsonify(all_country)
 		return resp
@@ -83,7 +83,7 @@ def state():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_estado;")
+		cur.execute("SELECT * FROM mystatuscare.tb_estado;")
 		all_states = cur.fetchall()
 		resp=jsonify(all_state)
 		return resp
@@ -115,7 +115,7 @@ def pathology():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_patologia;")
+		cur.execute("SELECT * FROM mystatuscare.tb_patologia;")
 		all_pathology = cur.fetchall()
 		resp=jsonify(all_pathology)
 		return resp
@@ -131,7 +131,7 @@ def symptoms():
 	try:
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mydb.tb_sintomas;")
+		cur.execute("SELECT * FROM mystatuscare.tb_sintomas;")
 		all_symptoms = cur.fetchall()
 		resp=jsonify(all_symptoms)
 		return resp
@@ -273,7 +273,7 @@ def api_login():
 
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT idt_usuario FROM mydb.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
+		cur.execute("SELECT idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
 		user = cur.fetchone()
 
 		if user == None:
@@ -303,7 +303,7 @@ def api_insert_user():
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mydb.tb_usuario(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario))
+		cur.execute("INSERT INTO mystatuscare.tb_usuario(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",(nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario))
 		conn.commit()
 		cur.close()
 		conn.close()
@@ -335,7 +335,7 @@ def api_insert_symptom():
 
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("INSERT INTO mydb.tb_sintomas_usuario(cod_sintoma, cod_usuario, dta_sintoma) VALUES (%s,%s,%s)",(idt_sintoma, idt_usuario,dta_sintoma))
+        cur.execute("INSERT INTO mystatuscare.tb_sintomas_usuario(cod_sintoma, cod_usuario, dta_sintoma) VALUES (%s,%s,%s)",(idt_sintoma, idt_usuario,dta_sintoma))
         conn.commit()
         close(cur,conn)
 
@@ -366,7 +366,7 @@ def api_insert_usertemp():
 
         conn = mysql.connect()
         cur = conn.cursor(pymysql.cursors.DictCursor)
-        cur.execute("INSERT INTO mydb.tb_temperatura(dta_temperatura, vlr_temperatura, cod_usuario) VALUES (%s,%s,%s)",(dta_temperatura, vlr_temperatura,idt_usuario))
+        cur.execute("INSERT INTO mystatuscare.tb_temperatura(dta_temperatura, vlr_temperatura, cod_usuario) VALUES (%s,%s,%s)",(dta_temperatura, vlr_temperatura,idt_usuario))
         conn.commit()
         cur.close()
         conn.close()
@@ -382,7 +382,7 @@ def show_pto():
 
 	conn = mysql.connect()
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	cur.execute("SELECT pto_usuario FROM mydb.tb_usuario WHERE idt_usuario=%s",(idt_usuario))
+	cur.execute("SELECT pto_usuario FROM mystatuscare.tb_usuario WHERE idt_usuario=%s",(idt_usuario))
 	result = cur.fetchone()
 	cur.close()
 	conn.close()
@@ -422,7 +422,7 @@ def att_pto():
 
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mydb.tb_usuario(pto_usuario,) VALUES (%s) WHERE idt_usuario=%s",(result,idt_usuario))
+		cur.execute("INSERT INTO mystatuscare.tb_usuario(pto_usuario,) VALUES (%s) WHERE idt_usuario=%s",(result,idt_usuario))
 		conn.commit()
 		cur.close()
 		conn.close()
@@ -438,7 +438,7 @@ def page_not_found(e):
 	return "<h1>404</h1><p>The resource could not be found.</p>", 404
 
 
-#INSERT INTO mydb.tb_sintomas_usuario(cod_sintoma, cod_usuario) VALUES (1,1);
+#INSERT INTO mystatuscare.tb_sintomas_usuario(cod_sintoma, cod_usuario) VALUES (1,1);
 
 if __name__ == "__main__":
 	app.run()
