@@ -4,7 +4,7 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     var password = document.getElementById('psw_usuario').value;
 
     
-    axios.post('http://localhost/api/v1/login', {
+    axios.post('http://127.0.0.1:5000/api/v1/login', {
       eml_usuario: email,
       psw_usuario: password
     })
@@ -21,24 +21,11 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
     
     e.preventDefault();
   }
-  function onSignIn(googleUser) {
-
-    // Useful data for your client-side scripts:
-    var profile = googleUser.getBasicProfile();
-     // Don't send this directly to your server!
-    console.log('Full Name: ' + profile.getName());
-    console.log('Given Name: ' + profile.getGivenName());
-    console.log('Family Name: ' + profile.getFamilyName());
-    console.log("Image URL: " + profile.getImageUrl());
-
-    // The ID token you need to pass to your backend:
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
-  }
   function onSuccess(googleUser) {
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    console.log("Email: " + profile.getBasicProfile().getEmail());
-    console.log("ID: " + profile.getBasicProfile().getId());
+    sessionStorage.setItem('name',googleUser.getBasicProfile().getName());
+    sessionStorage.setItem('email', googleUser.getBasicProfile().getEmail());
+    sessionStorage.setItem('id',googleUser.getBasicProfile().getId());
+    window.location.href = "../plataforma/register.html";
   }
   function onFailure(error) {
     console.log(error);
