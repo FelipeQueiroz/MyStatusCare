@@ -7,10 +7,10 @@
 	mysql.init_app(app)'''
 
 def config_sql(app):
-	app.config['MYSQL_DATABASE_USER'] = 'root'
-	app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-	app.config['MYSQL_DATABASE_DB'] = 'mydb'
-	app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+	app.config['MYSQL_DATABASE_USER'] = 'mystatuscare'
+	app.config['MYSQL_DATABASE_PASSWORD'] = 'MyStatusCare2020'
+	app.config['MYSQL_DATABASE_DB'] = 'mystatuscare'
+	app.config['MYSQL_DATABASE_HOST'] = 'wall-debian10.educatux.com.br'
 	app.config['DEBUG'] = True
 
 
