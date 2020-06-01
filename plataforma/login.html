@@ -32,8 +32,7 @@
                                         <h4 class="text-dark mb-4">Bem-vindo!</h4>
                                     </div>
                                     <form class="user" id="user">
-                                        <hr><a class="btn btn-primary btn-block text-white btn-google btn-user my-signin2" data-onsuccess="onSignIn" role="button"><i class="fab fa-google"></i>&nbsp; Registrar pelo Google</a>
-                                        <hr><a class="btn btn-primary btn-block text-white btn-google btn-user my-signin2" data-onsuccess="onSignIn" role="button"><i class="fab fa-google"></i>&nbsp; Login pelo Google</a>
+                                        <hr><div id="my-signin2"></div>
                                         <hr>
                                     </form>
                                 </div>
@@ -53,6 +52,8 @@
     <script src="assets/js/apiHandleLogin.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
 
 </body>
 
