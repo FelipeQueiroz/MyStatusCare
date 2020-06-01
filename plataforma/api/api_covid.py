@@ -301,7 +301,6 @@ def api_insert_user():
 		cod_cidade	= 	request.json.get('cod_cidade')
 		pto_usuario	= 	0
 		
-		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("INSERT INTO mystatuscare.tb_usuario(idt_usuario,nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(idt_usuario,nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario))
