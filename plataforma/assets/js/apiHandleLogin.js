@@ -1,13 +1,13 @@
   function isRegister(){
     axios.post('http://127.0.0.1:5000/api/v1/login', {
-      eml_usuario: email,
-      psw_usuario: password
+      eml_usuario: googleUser.getBasicProfile().getEmail(),
+      idt_usuario: googleUser.getBasicProfile().getId()
     })
     .then(function (response) {
-      return true;
+      console.log(response);
     })
     .catch(function (error) {
-      return false;
+      console.log(error);
     });
   }
 
@@ -15,11 +15,10 @@
     if(isRegister() == false){
     sessionStorage.setItem('name',googleUser.getBasicProfile().getName());
     sessionStorage.setItem('email', googleUser.getBasicProfile().getEmail());
-    sessionStorage.setItem('id',googleUser.getBasicProfile().getId());
-      window.location.href = "../plataforma/register.html";
+    window.location.href = "../plataforma/register.html";
     } else{
-      localStorage.id = googleUser.getBasicProfile().getId();
-      window.location.href= "../plataforma/index.html";
+      sessionStorage.setItem('id',googleUser.getBasicProfile().getId());
+      window.location.href = "../plataforma/index.html";
     }
   }
   function onFailure(error) {

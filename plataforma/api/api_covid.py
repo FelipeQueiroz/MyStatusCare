@@ -269,11 +269,11 @@ def api_filter_hospital():
 def api_login():
 	try:
 		eml_usuario	= 	request.json.get('eml_usuario')
-		psw_usuario =	request.json.get('psw_usuario')
+		idt_usuario =	request.json.get('idt_usuario')
 
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND psw_usuario=%s;",(eml_usuario, psw_usuario))
+		cur.execute("SELECT idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND idt_usuarioo=%s;",(eml_usuario, idt_usuario))
 		user = cur.fetchone()
 
 		if user == None:
