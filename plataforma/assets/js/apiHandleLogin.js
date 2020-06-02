@@ -1,7 +1,7 @@
   function isRegister(){
     axios.post('http://127.0.0.1:5000/api/v1/login', {
-      eml_usuario: googleUser.getBasicProfile().getEmail(),
-      idt_usuario: googleUser.getBasicProfile().getId()
+      eml_usuario: sessionStorage.getItem('email'),
+      idt_usuario: sessionStorage.getItem('id')
     })
     .then(function (response) {
       console.log(response);
