@@ -7,7 +7,7 @@
     if(isRegister() == false){
      window.location.href = "../plataforma/register.html";
     } else{
-      window.location.href = "../plataforma/index.html";
+      console.log("Requisição sem sucesso")
     }
   }
   function onFailure(error) {
