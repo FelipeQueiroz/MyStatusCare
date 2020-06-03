@@ -8,7 +8,7 @@ from flask_cors import CORS
 #import requests
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "www.mystatuscare.educatux.com.br"}})
 #logging.getLogger('flask_cors').level = logging.DEBUG
 
 app.config["DEBUG"] = True
@@ -19,7 +19,6 @@ mysql = MySQL()
 mysql.init_app(app)
 
 config_sql(app)
-
 
 
 @app.route('/')
