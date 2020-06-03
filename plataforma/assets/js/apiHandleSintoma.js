@@ -1,6 +1,6 @@
 
 var selectSintomas = document.getElementById("select_sintoma");
-axios.get('http://192.168.1.222/api/v1/sintomas/all')
+axios.get('http://127.0.0.1:5000/api/v1/sintomas/all')
     .then(function (response) {
         for(var i = 0; i < response.data.length; i++){
 
@@ -19,7 +19,7 @@ document.getElementById('addSintoma').addEventListener('submit', saveSintoma);
         var sintoma = document.getElementById('select_sintoma').value;
         var dtaSintoma = document.getElementById('dataSintoma').value;
         console.log(sintoma, dtaSintoma);
-        axios.post("http://192.168.1.222/api/v1/insert/sintoma?idt_usuario=" + localStorage.id,{
+        axios.post("http://127.0.0.1:5000/api/v1/insert/sintoma?idt_usuario=" + localStorage.id,{
             idt_usuario: localStorage.id,
             idt_sintoma: sintoma,
             dta_sintoma: dtaSintoma
@@ -41,7 +41,7 @@ document.getElementById('addSintoma').addEventListener('submit', saveSintoma);
         var valor = document.getElementById('valorTemperatura').value;
         var dtaTemperatura = document.getElementById('dataTemperatura').value;
         console.log(valor, dtaTemperatura);
-        axios.post("http://192.168.1.222/api/v1/insert/temperatura?idt_usuario=" + localStorage.id,{
+        axios.post("http://127.0.0.1:5000/api/v1/insert/temperatura?idt_usuario=" + localStorage.id,{
             vlr_temperatura: valor,
             dta_temperatura: dtaTemperatura
         })
@@ -59,7 +59,7 @@ function loadSintomas(){
 
         const table = document.getElementById('tableRow');
         
-          axios.get('http://192.168.1.222/api/v1/resources/sintomas_usuario?idt_usuario=' + localStorage.id)
+          axios.get('http://127.0.0.1:5000/api/v1/resources/sintomas_usuario?idt_usuario=' + localStorage.id)
           .then(function (response){
             for(var i = 0; i < response.data.length; i++){
               
@@ -76,7 +76,7 @@ function loadSintomas(){
 
           const tableTemp = document.getElementById('tableRowTemp');
         
-          axios.get('http://192.168.1.222/api/v1/resources/temperatura?idt_usuario=' + localStorage.id)
+          axios.get('http://127.0.0.1:5000/api/v1/resources/temperatura?idt_usuario=' + localStorage.id)
           .then(function (response){
             for(var i = 0; i < response.data.length; i++){
               

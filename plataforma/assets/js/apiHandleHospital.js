@@ -2,7 +2,7 @@ function getHospital (){
 
   const table = document.getElementById('tableRow');
   
-    axios.get('http://192.168.1.222/api/v1/hospital/all').then(function (response){
+    axios.get('http://127.0.0.1:5000/api/v1/hospital/all').then(function (response){
       for(var i = 0; i < response.data.length; i++){
         
         var row = table.insertRow(0);
