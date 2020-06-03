@@ -1,15 +1,4 @@
-  function isRegister(){
-    axios.post('http://127.0.0.1:5000/api/v1/login', {
-      eml_usuario: sessionStorage.getItem('email'),
-      idt_usuario: sessionStorage.getItem('id')
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+
 
   function onSuccess(googleUser) {
     if(isRegister() == false){
@@ -36,4 +25,17 @@
       'onfailure': onFailure
     });
   }
-    
+
+
+  function isRegister(){
+    axios.post('http://192.168.1.222/api/v1/login', {
+      eml_usuario: sessionStorage.getItem('email'),
+      idt_usuario: sessionStorage.getItem('id')
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
