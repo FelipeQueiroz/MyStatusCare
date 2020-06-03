@@ -1,12 +1,12 @@
 
 
   function onSuccess(googleUser) {
-    if(isRegister() == false){
     sessionStorage.setItem('name',googleUser.getBasicProfile().getName());
     sessionStorage.setItem('email', googleUser.getBasicProfile().getEmail());
-    window.location.href = "../plataforma/register.html";
+    sessionStorage.setItem('id',googleUser.getBasicProfile().getId());
+    if(isRegister() == false){
+     window.location.href = "../plataforma/register.html";
     } else{
-      sessionStorage.setItem('id',googleUser.getBasicProfile().getId());
       window.location.href = "../plataforma/index.html";
     }
   }
