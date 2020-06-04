@@ -2,7 +2,7 @@ function getHospital (){
 
   const table = document.getElementById('tableRow');
   
-    axios.get('http://educatux.dynu.net:5050/api/v1/hospital/all').then(function (response){
+    axios.get('https://educatux.dynu.net:5050/api/v1/hospital/all').then(function (response){
       for(var i = 0; i < response.data.length; i++){
         
         var row = table.insertRow(0);

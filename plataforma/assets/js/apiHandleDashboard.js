@@ -5,7 +5,7 @@ var userNav = document.getElementById('nav-link');
 var pontuacao = document.getElementById('pto_usuario');
 
 function onLoad(e){
-    axios.get("http://educatux.dynu.net:5050/api/v1/resources/usuarios?idt_usuario=" + localStorage.id)
+    axios.get("https://educatux.dynu.net:5050/api/v1/resources/usuarios?idt_usuario=" + localStorage.id)
     .then(function (response) {
       username.innerHTML += " " + response.data[0].nme_usuario + " !";
       userNav.innerHTML += " " + response.data[0].nme_usuario;
@@ -47,7 +47,7 @@ function onLoad(e){
 
     })
 
-    axios.get("http://192.168.1.222/api/v1/resources/temperatura?idt_usuario=" + localStorage.id)
+    axios.get("https://192.168.1.222/api/v1/resources/temperatura?idt_usuario=" + localStorage.id)
     .then(function (response) {
       var arrayValor = [];
       var arrayData = [];
