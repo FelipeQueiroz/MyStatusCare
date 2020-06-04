@@ -28,7 +28,7 @@
 
 
   function isRegister(){
-    axios.post('http://192.168.1.222/api/v1/login', {
+    axios.post('http://educatux.dynu.net:5050/api/v1/login', {
       eml_usuario: sessionStorage.getItem('email'),
       idt_usuario: sessionStorage.getItem('id')
     })

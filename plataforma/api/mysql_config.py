@@ -10,7 +10,7 @@ def config_sql(app):
 	app.config['MYSQL_DATABASE_USER'] = 'mystatuscare'
 	app.config['MYSQL_DATABASE_PASSWORD'] = 'MyStatusCare2020'
 	app.config['MYSQL_DATABASE_DB'] = 'mystatuscare'
-	app.config['MYSQL_DATABASE_HOST'] = '192.168.1.55:3306'
+	app.config['MYSQL_DATABASE_HOST'] = 'educatux.dynu.net:3306'
 	app.config['DEBUG'] = True
 
 

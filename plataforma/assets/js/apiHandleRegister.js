@@ -3,7 +3,7 @@ function getCities (){
 
   const select = document.getElementById('cod_cidade');
 
-  axios.get('http://192.168.1.222/api/v1/cidade/all').then(response => {
+  axios.get('http://educatux.dynu.net:5050/api/v1/cidade/all').then(response => {
     this.infos = response.data;
     for(var i = 0; i < infos.length; i++){
       
@@ -38,7 +38,7 @@ email.innerHTML += sessionStorage.getItem('email');
     
 
     
-    axios.post('http://192.168.1.222/api/v1/insert/usuarios', {
+    axios.post('http://educatux.dynu.net:5050/api/v1/insert/usuarios', {
       idt_usuario: sessionStorage.getItem('id'),
       nme_usuario: user,
       eml_usuario: email,

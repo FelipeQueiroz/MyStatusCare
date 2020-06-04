@@ -5,7 +5,7 @@ var userNav = document.getElementById('nav-link');
 var pontuacao = document.getElementById('pto_usuario');
 
 function onLoad(e){
-    axios.get("http://192.168.1.222:5000/api/v1/resources/usuarios?idt_usuario=" + localStorage.id)
+    axios.get("http://educatux.dynu.net:5050/api/v1/resources/usuarios?idt_usuario=" + localStorage.id)
     .then(function (response) {
       username.innerHTML += " " + response.data[0].nme_usuario + " !";
       userNav.innerHTML += " " + response.data[0].nme_usuario;
