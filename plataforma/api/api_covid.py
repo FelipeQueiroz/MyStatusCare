@@ -8,7 +8,7 @@ from flask_cors import CORS
 #import requests
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://mystatuscare.educatux.com.br"}})
+CORS(app)
 #logging.getLogger('flask_cors').level = logging.DEBUG
 
 app.config["DEBUG"] = True
@@ -21,6 +21,7 @@ mysql.init_app(app)
 config_sql(app)
 
 
+
 @app.route('/')
 def home():
 	return '''<h1> API COVID</h1>
@@ -28,37 +29,18 @@ def home():
 	<a href="http://127.0.0.1:5000/api/v1/resources/usuarios?idt_usuario=1">link</a><br>
 	'''
 
-#Rota table = TB_usuario
-@app.route('/api/v1/usuarios/all', methods=['GET'])
-def users():
-	try:
-		conn = mysql.connect()
-		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mystatuscare.tb_usuario;")
-		all_users = cur.fetchall()
-		resp=jsonify(all_users)
-		return resp
-	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
-
 #Rota table = City
 @app.route('/api/v1/cidade/all', methods=['GET'])
 def cities():
-	try:
-		conn = mysql.connect()
-		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT * FROM mystatuscare.tb_cidade;")
-		all_cities = cur.fetchall()
-		resp=jsonify(all_cities)
-		return resp
-	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
+    #try:
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur.execute("SELECT * FROM mystatuscare.tb_cidade;")
+    all_cities = cur.fetchall()
+    cur.close()
+    conn.close()
+    resp=jsonify(all_cities)
+    return resp
 
 #Rota table = country
 @app.route('/api/v1/pais/all', methods=['GET'])
@@ -68,13 +50,12 @@ def country():
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("SELECT * FROM mystatuscare.tb_pais;")
 		all_country = cur.fetchall()
+		cur.close()
+		conn.close()
 		resp=jsonify(all_country)
 		return resp
 	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
+		return "a"
 
 #Rota table = state
 @app.route('/api/v1/estado/all', methods=['GET'])
@@ -84,13 +65,12 @@ def state():
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("SELECT * FROM mystatuscare.tb_estado;")
 		all_states = cur.fetchall()
+		cur.close()
+		conn.close()
 		resp=jsonify(all_state)
 		return resp
 	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
+		return "a"
 
 #Rota table = TB_hospital
 @app.route('/api/v1/hospital/all', methods=['GET'])
@@ -101,13 +81,11 @@ def hospital():
 		cur.execute("SELECT nme_hospital, nme_cidade, nme_estado FROM tb_hospital INNER JOIN tb_cidade ON tb_hospital.cod_cidade = idt_cidade INNER JOIN tb_estado ON tb_hospital.cod_estado = tb_estado.idt_estado;")
 		all_hospital = cur.fetchall()
 		resp=jsonify(all_hospital)
-		return resp
-	except Exception as e:
-		print(e)
-	finally:
 		cur.close()
 		conn.close()
-
+		return resp
+	except Exception as e:
+		return "a"
 #Rota table = TB_patologia
 @app.route('/api/v1/patologia/all', methods=['GET'])
 def pathology():
@@ -116,13 +94,12 @@ def pathology():
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("SELECT * FROM mystatuscare.tb_patologia;")
 		all_pathology = cur.fetchall()
+		cur.close()
+		conn.close()
 		resp=jsonify(all_pathology)
 		return resp
 	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
+		return "a"
 
 #Rota table = TB_sintomas
 @app.route('/api/v1/sintomas/all', methods=['GET'])
@@ -132,13 +109,13 @@ def symptoms():
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("SELECT * FROM mystatuscare.tb_sintomas;")
 		all_symptoms = cur.fetchall()
+		cur.close()
+		conn.close()
 		resp=jsonify(all_symptoms)
 		return resp
 	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
+		return "a"
+
 
 @app.route('/api/v1/resources/sintomas_usuario', methods=['GET'])
 def user_symptoms():
@@ -150,16 +127,15 @@ def user_symptoms():
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("SELECT tb_sintomas.nme_sintoma, tb_usuario.nme_usuario, tb_sintomas_usuario.dta_sintoma from tb_sintomas_usuario INNER JOIN tb_sintomas ON tb_sintomas_usuario.cod_sintoma = tb_sintomas.idt_sintoma INNER JOIN tb_usuario ON tb_sintomas_usuario.cod_usuario = tb_usuario.idt_usuario WHERE idt_usuario = %s;",(idt_usuario))
 		all_user_symptoms = cur.fetchall()
+		cur.close()
+		conn.close()
 		resp=jsonify(all_user_symptoms)
 		return resp
 	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
+		return "a"
 
 
-
+'''
 #filtro usuarios
 @app.route('/api/v1/resources/usuarios', methods=['GET'])
 def api_filter_user():
@@ -213,6 +189,8 @@ def api_filter_user():
 
 	resp=jsonify(result)
 	return resp
+
+'''
 
 @app.route('/api/v1/resources/hospital', methods=['GET'])
 def api_filter_hospital():
@@ -274,6 +252,8 @@ def api_login():
 		cur = conn.cursor(pymysql.cursors.DictCursor)
 		cur.execute("SELECT idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND idt_usuarioo=%s;",(eml_usuario, idt_usuario))
 		user = cur.fetchone()
+		cur.close()
+		conn.close()
 
 		if user == None:
 			return  -1
@@ -281,11 +261,7 @@ def api_login():
 			return jsonify(user)
 
 	except Exception as e:
-		print(e)
-	finally:
-		cur.close()
-		conn.close()
-
+		return "a"
 
 
 @app.route('/api/v1/insert/usuarios', methods=['POST'])
@@ -372,7 +348,7 @@ def api_insert_usertemp():
 
         return "Temp Registrada"
     except Exception as e:
-        return e
+    	return "a"
 
 
 @app.route('/api/v1/resources/pontuacao', methods=['GET'])
