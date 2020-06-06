@@ -2,7 +2,7 @@ function getHospital (){
 
   const table = document.getElementById('tableRow');
   
-    axios.get('https://api-msc.educatux.com.br//api/v1/hospital/all').then(function (response){
+    axios.get('https://api-msc.educatux.com.br/api/v1/hospital/all').then(function (response){
       for(var i = 0; i < response.data.length; i++){
         
         var row = table.insertRow(0);

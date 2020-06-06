@@ -1,6 +1,6 @@
 
 var selectSintomas = document.getElementById("select_sintoma");
-axios.get('https://api-msc.educatux.com.br//api/v1/sintomas/all')
+axios.get('https://api-msc.educatux.com.br/api/v1/sintomas/all')
     .then(function (response) {
         for(var i = 0; i < response.data.length; i++){
 
@@ -19,7 +19,7 @@ document.getElementById('addSintoma').addEventListener('submit', saveSintoma);
         var sintoma = document.getElementById('select_sintoma').value;
         var dtaSintoma = document.getElementById('dataSintoma').value;
         console.log(sintoma, dtaSintoma);
-        axios.post("https://api-msc.educatux.com.br//api/v1/insert/sintoma?idt_usuario=" + sessionStorage.getItem('id'),{
+        axios.post("https://api-msc.educatux.com.br/api/v1/insert/sintoma?idt_usuario=" + sessionStorage.getItem('id'),{
             idt_usuario: sessionStorage.getItem('id'),
             idt_sintoma: sintoma,
             dta_sintoma: dtaSintoma
@@ -41,7 +41,7 @@ document.getElementById('addSintoma').addEventListener('submit', saveSintoma);
         var valor = document.getElementById('valorTemperatura').value;
         var dtaTemperatura = document.getElementById('dataTemperatura').value;
         console.log(valor, dtaTemperatura);
-        axios.post("https://api-msc.educatux.com.br//api/v1/insert/temperatura?idt_usuario=" + sessionStorage.getItem('id'),{
+        axios.post("https://api-msc.educatux.com.br/api/v1/insert/temperatura?idt_usuario=" + sessionStorage.getItem('id'),{
             vlr_temperatura: valor,
             dta_temperatura: dtaTemperatura
         })
@@ -59,7 +59,7 @@ function loadSintomas(){
 
         const table = document.getElementById('tableRow');
         
-          axios.get('https://api-msc.educatux.com.br//api/v1/resources/sintomas_usuario?idt_usuario=' + sessionStorage.getItem('id'))
+          axios.get('https://api-msc.educatux.com.br/api/v1/resources/sintomas_usuario?idt_usuario=' + sessionStorage.getItem('id'))
           .then(function (response){
             for(var i = 0; i < response.data.length; i++){
               
@@ -76,7 +76,7 @@ function loadSintomas(){
 
           const tableTemp = document.getElementById('tableRowTemp');
         
-          axios.get('https://api-msc.educatux.com.br//api/v1/resources/temperatura?idt_usuario=' + sessionStorage.getItem('id'))
+          axios.get('https://api-msc.educatux.com.br/api/v1/resources/temperatura?idt_usuario=' + sessionStorage.getItem('id'))
           .then(function (response){
             for(var i = 0; i < response.data.length; i++){
               

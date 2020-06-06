@@ -5,7 +5,7 @@ var userNav = document.getElementById('nav-link');
 var pontuacao = document.getElementById('pto_usuario');
 
 function onLoad(e){
-    axios.get("https://api-msc.educatux.com.br//api/v1/resources/usuarios?idt_usuario=" + sessionStorage.getItem('id'))
+    axios.get("https://api-msc.educatux.com.br/api/v1/resources/usuarios?idt_usuario=" + sessionStorage.getItem('id'))
     .then(function (response) {
       console.log(response)
       username.innerHTML += " " + response.data[0].nme_usuario + " !";
@@ -48,7 +48,7 @@ function onLoad(e){
 
     })
 
-    axios.get("https://api-msc.educatux.com.br//api/v1/resources/temperatura?idt_usuario=" + sessionStorage.getItem('id'))
+    axios.get("https://api-msc.educatux.com.br/api/v1/resources/temperatura?idt_usuario=" + sessionStorage.getItem('id'))
     .then(function (response) {
       var arrayValor = [];
       var arrayData = [];

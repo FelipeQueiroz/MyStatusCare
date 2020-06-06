@@ -3,7 +3,7 @@ function getCities (){
 
   const select = document.getElementById('cod_cidade');
 
-  axios.get('https://educatux.dynu.net:5050/api/v1/cidade/all').then(response => {
+  axios.get('https://api-msc.educatux.com.br/api/v1/cidade/all').then(response => {
     this.infos = response.data;
     for(var i = 0; i < infos.length; i++){
       
