@@ -143,6 +143,7 @@ def api_filter_user():
 
 	idg_usuario = query_parameters.get("idg_usuario")
 	nme_usuario = query_parameters.get("nme_usuario")
+	eml_usuario = query_parameters.get("eml_usuario")
 	ida_usuario = query_parameters.get("ida_usuario")
 	end_usuario = query_parameters.get("end_usuario")
 	cod_cidade  = query_parameters.get("cod_cidade")
@@ -152,13 +153,17 @@ def api_filter_user():
 
 	query = "SELECT * FROM tb_usuario WHERE"
 	to_filter=[]
-	if idt_usuario:
+	if idg_usuario:
 		query += ' idg_usuario=%s AND'
 		to_filter.append(idg_usuario)
 
 	if nme_usuario:
 		query += ' nme_usuario=%s AND'
 		to_filter.append(nme_usuario)
+
+	if eml_usuario:
+		query += ' eml_usuario=%s AND'
+		to_filter.append(eml_usuario)
 	
 	if ida_usuario:
 		query += ' ida_usuario=%s AND'
@@ -177,7 +182,7 @@ def api_filter_user():
 		to_filter.append(pto_usuario)
 
 
-	if not (idt_usuario or nme_usuario or ida_usuario or end_usuario or cod_cidade or pto_usuario):
+	if not (idg_usuario or nme_usuario or eml_usuario or ida_usuario or end_usuario or cod_cidade or pto_usuario):
 		return page_not_found(404)
 
 	query = query[:-4] + ';'
