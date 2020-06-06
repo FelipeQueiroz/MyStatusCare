@@ -25,10 +25,10 @@ function getCities (){
 
 document.getElementById('user').addEventListener('submit', performPostRequest);
 
-var user = document.getElementById('nme_usuario').value;
-var email = document.getElementById('eml_usuario').value;
-user.innerHTML += sessionStorage.getItem('name');
-email.innerHTML += sessionStorage.getItem('email');
+var user = document.getElementById('nme_usuario');
+var email = document.getElementById('eml_usuario');
+user.value = sessionStorage.getItem('name');
+email.value = sessionStorage.getItem('email');
 
   function performPostRequest(e) {
     var cidade = document.getElementById('cod_cidade').value;
