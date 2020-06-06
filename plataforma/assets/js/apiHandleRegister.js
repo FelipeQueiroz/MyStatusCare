@@ -25,19 +25,21 @@ function getCities (){
 
 document.getElementById('user').addEventListener('submit', performPostRequest);
 
-var user = document.getElementById('nme_usuario');
-var email = document.getElementById('eml_usuario');
+var userG = document.getElementById('nme_usuario');
+var emailG = document.getElementById('eml_usuario');
 user.value = sessionStorage.getItem('name');
 email.value = sessionStorage.getItem('email');
 
   function performPostRequest(e) {
+    var user = document.getElementById('nme_usuario').value;
+    var email = document.getElementById('eml_usuario').value;
     var cidade = document.getElementById('cod_cidade').value;
     var idade = document.getElementById('ida_usuario').value;
     var endereco = document.getElementById('end_usuario').value;
     
 
     
-    axios.post('https://api-msc.educatux.com.br/api/v1/insert/usuarios', {
+    axios.post('https://api-msc.educatux.com.br/api/v1/insert/usuarios', const data = {
       idg_usuario: sessionStorage.getItem('idg'),
       nme_usuario: user,
       eml_usuario: email,
@@ -47,6 +49,7 @@ email.value = sessionStorage.getItem('email');
       
     })
     .then(function (response) {
+      sessionStorage.setItem("AuthenticationState", "Authenticated");
       window.location.href = "../plataforma/index.html";
     })
     .catch(function (error) {
