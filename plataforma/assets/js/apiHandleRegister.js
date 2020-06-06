@@ -34,12 +34,11 @@ email.value = sessionStorage.getItem('email');
     var cidade = document.getElementById('cod_cidade').value;
     var idade = document.getElementById('ida_usuario').value;
     var endereco = document.getElementById('end_usuario').value;
-    var password = document.getElementById('psw_usuario').value;
     
 
     
     axios.post('https://api-msc.educatux.com.br/api/v1/insert/usuarios', {
-      idt_usuario: sessionStorage.getItem('id'),
+      idg_usuario: sessionStorage.getItem('idg'),
       nme_usuario: user,
       eml_usuario: email,
       end_usuario: endereco,

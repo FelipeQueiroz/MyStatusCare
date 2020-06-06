@@ -141,7 +141,7 @@ def user_symptoms():
 def api_filter_user():
 	query_parameters = request.args
 
-	idt_usuario = query_parameters.get("idt_usuario")
+	idg_usuario = query_parameters.get("idg_usuario")
 	nme_usuario = query_parameters.get("nme_usuario")
 	ida_usuario = query_parameters.get("ida_usuario")
 	end_usuario = query_parameters.get("end_usuario")
@@ -153,8 +153,8 @@ def api_filter_user():
 	query = "SELECT * FROM tb_usuario WHERE"
 	to_filter=[]
 	if idt_usuario:
-		query += ' idt_usuario=%s AND'
-		to_filter.append(idt_usuario)
+		query += ' idg_usuario=%s AND'
+		to_filter.append(idg_usuario)
 
 	if nme_usuario:
 		query += ' nme_usuario=%s AND'
