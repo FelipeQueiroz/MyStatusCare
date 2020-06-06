@@ -27,8 +27,8 @@ document.getElementById('user').addEventListener('submit', performPostRequest);
 
 var userG = document.getElementById('nme_usuario');
 var emailG = document.getElementById('eml_usuario');
-user.value = sessionStorage.getItem('name');
-email.value = sessionStorage.getItem('email');
+userG.value = sessionStorage.getItem('name');
+emailG.value = sessionStorage.getItem('email');
 
   function performPostRequest(e) {
     var user = document.getElementById('nme_usuario').value;
@@ -50,7 +50,9 @@ email.value = sessionStorage.getItem('email');
     })
     .then(function (response) {
       sessionStorage.setItem("AuthenticationState", "Authenticated");
+      sessionStorage.setItem('id', getIdUser())
       window.location.href = "../plataforma/index.html";
+
     })
     .catch(function (error) {
       var errorInput = document.getElementById('errorAlert');
@@ -61,3 +63,13 @@ email.value = sessionStorage.getItem('email');
     e.preventDefault();
   }
 
+function getIdUser(){
+  axios.post('https://api-msc.educatux.com.br/api/v1/login', {
+    eml_usuario: sessionStorage.getItem('email'),
+    idg_usuario: sessionStorage.getItem('idg')
+  }
+)
+.then(function (response){
+  return response.data[0].idt_usuario
+})
+}

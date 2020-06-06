@@ -37,6 +37,8 @@
         idg_usuario: sessionStorage.getItem('idg')
       }
     )
-    .then(() => {return true})
+    .then((response) => {
+      sessionStorage.setItem('id', response.data[0].idt_usuario)
+      return true})
     .catch(() => {return false});
   }
