@@ -141,7 +141,7 @@ def user_symptoms():
 def api_filter_user():
 	query_parameters = request.args
 
-	idg_usuario = query_parameters.get("idg_usuario")
+	idt_usuario = query_parameters.get("idt_usuario")
 	nme_usuario = query_parameters.get("nme_usuario")
 	eml_usuario = query_parameters.get("eml_usuario")
 	ida_usuario = query_parameters.get("ida_usuario")
@@ -153,17 +153,14 @@ def api_filter_user():
 
 	query = "SELECT * FROM tb_usuario WHERE"
 	to_filter=[]
-	if idg_usuario:
-		query += ' idg_usuario=%s AND'
-		to_filter.append(idg_usuario)
+	if idt_usuario:
+		query += ' idt_usuario=%s AND'
+		to_filter.append(idt_usuario)
 
 	if nme_usuario:
 		query += ' nme_usuario=%s AND'
 		to_filter.append(nme_usuario)
-
-	if eml_usuario:
-		query += ' eml_usuario=%s AND'
-		to_filter.append(eml_usuario)
+		
 	
 	if ida_usuario:
 		query += ' ida_usuario=%s AND'
@@ -182,7 +179,7 @@ def api_filter_user():
 		to_filter.append(pto_usuario)
 
 
-	if not (idg_usuario or nme_usuario or eml_usuario or ida_usuario or end_usuario or cod_cidade or pto_usuario):
+	if not (idt_usuario or nme_usuario or ida_usuario or end_usuario or cod_cidade or pto_usuario):
 		return page_not_found(404)
 
 	query = query[:-4] + ';'
@@ -269,10 +266,9 @@ def api_login():
 @app.route('/api/v1/insert/usuarios', methods=['POST'])
 def api_insert_user():
 	try:
-		idt_usuario = 	request.json.get('idt_usuario') 
+		idg_usuario = 	request.json.get('idg_usuario') 
 		nme_usuario = 	request.json.get('nme_usuario') 
 		ida_usuario = 	request.json.get('ida_usuario')
-		psw_usuario =	request.json.get('psw_usuario')
 		end_usuario =	request.json.get('end_usuario')
 		eml_usuario	= 	request.json.get('eml_usuario')
 		cod_cidade	= 	request.json.get('cod_cidade')
@@ -280,7 +276,7 @@ def api_insert_user():
 		
 		conn = mysql.connect()
 		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mystatuscare.tb_usuario(idt_usuario,nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(idt_usuario,nme_usuario,ida_usuario,end_usuario,psw_usuario,eml_usuario,cod_cidade,pto_usuario))
+		cur.execute("INSERT INTO mystatuscare.tb_usuario(idg_usuario,nme_usuario,ida_usuario,end_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",(idg_usuario,nme_usuario,ida_usuario,end_usuario,eml_usuario,cod_cidade,pto_usuario))
 		conn.commit()
 		cur.close()
 		conn.close()
