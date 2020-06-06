@@ -50,7 +50,7 @@ emailG.value = sessionStorage.getItem('email');
     })
     .then(function (response) {
       sessionStorage.setItem("AuthenticationState", "Authenticated");
-      sessionStorage.setItem('id', getIdUser())
+      getIdUser();
       window.location.href = "../plataforma/index.html";
 
     })
@@ -70,6 +70,6 @@ function getIdUser(){
   }
 )
 .then(function (response){
-  return response.data[0].idt_usuario
+  sessionStorage.setItem('id', response.data[0].idt_usuario)
 })
 }
