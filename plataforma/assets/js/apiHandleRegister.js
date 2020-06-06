@@ -43,7 +43,6 @@ email.value = sessionStorage.getItem('email');
       nme_usuario: user,
       eml_usuario: email,
       end_usuario: endereco,
-      psw_usuario: password,
       cod_cidade: cidade,
       ida_usuario: idade
       
