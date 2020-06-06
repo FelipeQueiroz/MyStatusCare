@@ -5,8 +5,9 @@ var userNav = document.getElementById('nav-link');
 var pontuacao = document.getElementById('pto_usuario');
 
 function onLoad(e){
-    axios.get("http://api-msc.educatux.com.br/api/v1/resources/usuarios?idt_usuario=" + localStorage.id)
+    axios.get("https://api-msc.educatux.com.br//api/v1/resources/usuarios?idt_usuario=" + sessionStorage.getItem('id'))
     .then(function (response) {
+      console.log(response)
       username.innerHTML += " " + response.data[0].nme_usuario + " !";
       userNav.innerHTML += " " + response.data[0].nme_usuario;
       pontuacao.innerHTML += " " + response.data[0].pto_usuario;
@@ -47,7 +48,7 @@ function onLoad(e){
 
     })
 
-    axios.get("http://api-msc.educatux.com.br/api/v1/resources/temperatura?idt_usuario=" + localStorage.id)
+    axios.get("https://api-msc.educatux.com.br//api/v1/resources/temperatura?idt_usuario=" + sessionStorage.getItem('id'))
     .then(function (response) {
       var arrayValor = [];
       var arrayData = [];
@@ -56,9 +57,8 @@ function onLoad(e){
         arrayData.push(moment(response.data[i].dta_temperatura).format("DD/MM/YYYY"));
 
       }
-      console.log(arrayValor)
       var chartTemp = document.getElementById("tempChart").getContext('2d');
-      var tempChart = new Chart(chartTemp,{
+      new Chart(chartTemp,{
         type: "line",
           data:{
             labels:arrayData,
@@ -109,7 +109,8 @@ function onLoad(e){
 
 
 function logOff(){
-  localStorage.id = null;
+  window.location.href="../ladingpage/index.html"
+  sessionStorage.clear();
 }
 //Função para bloquear a entrada de não usuários.
 if (sessionStorage.getItem('AuthenticationState') === null) {

@@ -135,7 +135,7 @@ def user_symptoms():
 		return "a"
 
 
-'''
+
 #filtro usuarios
 @app.route('/api/v1/resources/usuarios', methods=['GET'])
 def api_filter_user():
@@ -190,7 +190,7 @@ def api_filter_user():
 	resp=jsonify(result)
 	return resp
 
-'''
+
 
 @app.route('/api/v1/resources/hospital', methods=['GET'])
 def api_filter_hospital():
@@ -244,24 +244,21 @@ def api_filter_hospital():
 
 @app.route('/api/v1/login', methods=['POST'])
 def api_login():
-	try:
-		eml_usuario	= 	request.json.get('eml_usuario')
-		idt_usuario =	request.json.get('idt_usuario')
+	
+    eml_usuario    =    request.json.get('eml_usuario')
+    idg_usuario    =    request.json.get('idg_usuario')
 
-		conn = mysql.connect()
-		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("SELECT idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND idt_usuarioo=%s;",(eml_usuario, idt_usuario))
-		user = cur.fetchone()
-		cur.close()
-		conn.close()
-
-		if user == None:
-			return  -1
-		else:
-			return jsonify(user)
-
-	except Exception as e:
-		return "a"
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur.execute("SELECT idg_usuario, idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND idg_usuario=%s;",(eml_usuario, idg_usuario))
+    user = cur.fetchall()
+    cur.close()
+    conn.close()
+	
+    if user == None:
+        return  -1
+    else:
+        return jsonify(user)
 
 
 @app.route('/api/v1/insert/usuarios', methods=['POST'])

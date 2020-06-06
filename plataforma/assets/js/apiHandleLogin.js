@@ -3,11 +3,13 @@
   function onSuccess(googleUser) {
     sessionStorage.setItem('name',googleUser.getBasicProfile().getName());
     sessionStorage.setItem('email', googleUser.getBasicProfile().getEmail());
-    sessionStorage.setItem('id',googleUser.getBasicProfile().getId());
-    if(isRegister() == false){
+    sessionStorage.setItem('idg',googleUser.getBasicProfile().getId());
+    if(!isRegister()){
      window.location.href = "../plataforma/register.html";
-    } else{
-      console.log("Requisição sem sucesso")
+    } else if(isRegister()){
+      sessionStorage.setItem("AuthenticationState", "Authenticated");
+      
+      window.location.href = "../plataforma/index.html";
     }
   }
   function onFailure(error) {
@@ -27,17 +29,14 @@
   }
 
 
+
+
   function isRegister(){
-    axios.post('http://api-msc.educatux.com.br/api/v1/login', {
-      eml_usuario: sessionStorage.getItem('email'),
-      idt_usuario: sessionStorage.getItem('id')
-    })
-    .then(function (response) {
-      console.log(response);
-      return true;
-    })
-    .catch(function (error) {
-      console.log(error);
-      return false;
-    });
+    axios.post('https://api-msc.educatux.com.br//api/v1/login', {
+        eml_usuario: 'teste',
+        idg_usuario: '41251'
+      }
+    )
+    .then(() => {return true})
+    .catch(() => {return false});
   }
