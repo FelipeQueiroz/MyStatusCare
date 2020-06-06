@@ -38,7 +38,7 @@ email.innerHTML += sessionStorage.getItem('email');
     
 
     
-    axios.post('https://api-msc.educatux.com.br//api/v1/insert/usuarios', {
+    axios.post('https://api-msc.educatux.com.br/api/v1/insert/usuarios', {
       idt_usuario: sessionStorage.getItem('id'),
       nme_usuario: user,
       eml_usuario: email,
