@@ -48,9 +48,9 @@ emailG.value = sessionStorage.getItem('email');
       ida_usuario: idade
       
     })
-    .then(async function (response) {
+    .then(function (response) {
+      sessionStorage.setItem("id", response.data[0].idt_usuario)
       sessionStorage.setItem("AuthenticationState", "Authenticated");
-      await getIdUser();
       window.location.href = "../plataforma/index.html";
 
     })
@@ -64,12 +64,5 @@ emailG.value = sessionStorage.getItem('email');
   }
 
 function getIdUser(){
-  axios.post('https://api-msc.educatux.com.br/api/v1/login', {
-    eml_usuario: sessionStorage.getItem('email'),
-    idg_usuario: sessionStorage.getItem('idg')
-  }
-)
-.then(function (response){
-  sessionStorage.setItem('id', response.data[0].idt_usuario)
-})
+ 
 }

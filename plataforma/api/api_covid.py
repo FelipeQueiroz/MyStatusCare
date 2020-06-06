@@ -265,25 +265,35 @@ def api_login():
 
 @app.route('/api/v1/insert/usuarios', methods=['POST'])
 def api_insert_user():
-	try:
-		idg_usuario = 	request.json.get('idg_usuario') 
-		nme_usuario = 	request.json.get('nme_usuario') 
-		ida_usuario = 	request.json.get('ida_usuario')
-		end_usuario =	request.json.get('end_usuario')
-		eml_usuario	= 	request.json.get('eml_usuario')
-		cod_cidade	= 	request.json.get('cod_cidade')
-		pto_usuario	= 	0
-		
-		conn = mysql.connect()
-		cur = conn.cursor(pymysql.cursors.DictCursor)
-		cur.execute("INSERT INTO mystatuscare.tb_usuario(idg_usuario,nme_usuario,ida_usuario,end_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",(idg_usuario,nme_usuario,ida_usuario,end_usuario,eml_usuario,cod_cidade,pto_usuario))
-		conn.commit()
-		cur.close()
-		conn.close()
-		
-		return "Registered"
-	except Exception as e:
-		return e
+    idg_usuario =     request.json.get('idg_usuario') 
+    nme_usuario =     request.json.get('nme_usuario') 
+    ida_usuario =     request.json.get('ida_usuario')
+    end_usuario =    request.json.get('end_usuario')
+    eml_usuario =     request.json.get('eml_usuario')
+    cod_cidade  =     request.json.get('cod_cidade')
+    pto_usuario =     0
+
+    conn = mysql.connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor)
+    cur.execute("INSERT INTO mystatuscare.tb_usuario(idg_usuario,nme_usuario,ida_usuario,end_usuario,eml_usuario,cod_cidade,pto_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",(idg_usuario,nme_usuario,ida_usuario,end_usuario,eml_usuario,cod_cidade,pto_usuario))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    try:
+        conn = mysql.connect()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("SELECT idg_usuario, idt_usuario FROM mystatuscare.tb_usuario WHERE eml_usuario=%s AND idg_usuario=%s;",(eml_usuario, idg_usuario))
+        user = cur.fetchall()
+        cur.close()
+        conn.close()
+
+        if user == None:
+            return  -1
+        else:
+            return jsonify(user)
+    except:
+        return "Usuário não registrado"
 
 @app.route('/api/v1/insert/sintoma', methods= ['POST','GET'])
 def api_insert_symptom():
