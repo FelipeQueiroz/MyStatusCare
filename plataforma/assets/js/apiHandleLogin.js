@@ -33,8 +33,8 @@
 
   function isRegister(){
     axios.post('https://api-msc.educatux.com.br//api/v1/login', {
-        eml_usuario: 'teste',
-        idg_usuario: '41251'
+        eml_usuario: sessionStorage.getItem('email'),
+        idg_usuario: sessionStorage.getItem('idg')
       }
     )
     .then(() => {return true})
