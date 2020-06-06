@@ -4,13 +4,7 @@
     sessionStorage.setItem('name',googleUser.getBasicProfile().getName());
     sessionStorage.setItem('email', googleUser.getBasicProfile().getEmail());
     sessionStorage.setItem('idg',googleUser.getBasicProfile().getId());
-    if(!isRegister()){
-     window.location.href = "../plataforma/register.html";
-    } else if(isRegister()){
-      sessionStorage.setItem("AuthenticationState", "Authenticated");
-      
-      window.location.href = "../plataforma/index.html";
-    }
+    isRegister();
   }
   function onFailure(error) {
     console.log(error);
@@ -37,8 +31,11 @@
         idg_usuario: sessionStorage.getItem('idg')
       }
     )
-    .then((response) => {
+    .then(function (response) {
       sessionStorage.setItem('id', response.data[0].idt_usuario);
-      return true;})
-    .catch(() => {return false});
+      sessionStorage.setItem("AuthenticationState", "Authenticated");
+      window.location.href = "../plataforma/index.html";})
+    .catch(function (error) {
+      window.location.href = "../plataforma/register.html";
+    });
   }

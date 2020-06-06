@@ -48,9 +48,9 @@ emailG.value = sessionStorage.getItem('email');
       ida_usuario: idade
       
     })
-    .then(function (response) {
+    .then(async function (response) {
       sessionStorage.setItem("AuthenticationState", "Authenticated");
-      getIdUser();
+      await getIdUser();
       window.location.href = "../plataforma/index.html";
 
     })
