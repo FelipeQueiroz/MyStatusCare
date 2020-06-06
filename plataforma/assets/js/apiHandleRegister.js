@@ -39,7 +39,7 @@ email.value = sessionStorage.getItem('email');
     
 
     
-    axios.post('https://api-msc.educatux.com.br/api/v1/insert/usuarios', const data = {
+    axios.post('https://api-msc.educatux.com.br/api/v1/insert/usuarios', {
       idg_usuario: sessionStorage.getItem('idg'),
       nme_usuario: user,
       eml_usuario: email,
