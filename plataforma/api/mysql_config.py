@@ -7,10 +7,10 @@
 	mysql.init_app(app)'''
 
 def config_sql(app):
-	app.config['MYSQL_DATABASE_USER'] = 'mystatuscare'
-	app.config['MYSQL_DATABASE_PASSWORD'] = 'MyStatusCare2020'
-	app.config['MYSQL_DATABASE_DB'] = 'mystatuscare'
-	app.config['MYSQL_DATABASE_HOST'] = 'router1.dynu.net'
+	app.config['MYSQL_DATABASE_USER'] = ''******''
+	app.config['MYSQL_DATABASE_PASSWORD'] = '******'
+	app.config['MYSQL_DATABASE_DB'] = '******'
+	app.config['MYSQL_DATABASE_HOST'] = '******'
 	app.config['DEBUG'] = True
 
 
